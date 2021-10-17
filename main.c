@@ -8,7 +8,7 @@
 
 #define TOUT_TO_PUBLISH 5000
 #define PIN_BTN1 27
-#define PIN_LUZ1 17
+#define PIN_LUZ1 26
 
 /* This program connects to https://www.maqiatto.com/
  * Periodically publishes test messages with your credentials.
@@ -23,26 +23,29 @@ int main(int argc, char* argv[])
 
 
     pinMode(PIN_LUZ1, OUTPUT);
-    
+    digitalWrite(PIN_LUZ1, 1);
+    delay(5000);
     pinMode(PIN_BTN1, INPUT);
-    pullUpDnControl(7, PUD_UP);
+    pullUpDnControl(PIN_BTN1, PUD_UP);
+    
     int estado_luz1 = 0;
+
     while(1){
         if(digitalRead(PIN_BTN1) == LOW){
             if(estado_luz1 ==0){
                 estado_luz1 =1;
-                digitalWrite(PIN_LUZ1, LOW);
-                MQTTPublish(TOPIC, "HIGH");
-                sleep(TOUT_TO_PUBLISH / 1000);
+                digitalWrite(PIN_LUZ1, HIGH);
+                delay(1000);
+                MQTTPublish(TOPIC, "LOW");
             }else{
                 estado_luz1 = 0;
-                digitalWrite(P, HIGH);
-                MQTTPublish(TOPIC, "LOW");
-                sleep(TOUT_TO_PUBLISH / 1000);
+                digitalWrite(PIN_LUZ1, LOW);
+                delay(500);
+                MQTTPublish(TOPIC, "HIGH");
+            
             }
             while(digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(2000);
-            
             
         }
     }

@@ -2,15 +2,15 @@
 #define LINUX_CREDENTIALS
 
 /* Provide MQTT broker credentials as denoted in maqiatto.com. */
-#define CLIENTID        "a-really-unique-id-as-string"
+#define CLIENTID        "raspberry"
 #define BROKER_ADDR     "maqiatto.com"
-#define USERNAME        "your-registered-email"
-#define PASSWORD        "your-broker-password"
+#define USERNAME        "hiago23rangel@gmail.com"
+#define PASSWORD        "2314"
 
 /* Provide topic as it is denoted in your topic list. 
  * For example mine is : cadominna@gmail.com/topic1
  * To add topics, see https://www.maqiatto.com/configure
  */
-#define TOPIC    "your-topic-from-your-topic-list"
+#define TOPIC    "hiago23rangel@gmail.com/pbl2"
 
 #endif /* LINUX_CREDENTIALS */
