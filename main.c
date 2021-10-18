@@ -49,9 +49,9 @@ int main(int argc, char* argv[])
             
         }*/
         sprintf(json, "{ \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s }};", 1, "OnChangeState", "true");
-        MQTTPublish(TOPIC, "json");
         printf("batata %s", json);
-        // printf(json)
+        printf(json)
+        MQTTPublish(TOPIC, "json");
         delay(3000);
 
     
