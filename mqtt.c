@@ -12,13 +12,13 @@
 MQTTClient client;
 
 
-void setChangeState(int id, bool state){
+/*void setChangeState(int id, bool state){
 
 
     //TODO mudar o estado do dispositivo com esse id
     
 }
-
+*/
 /* Subscribed MQTT topic listener function. */
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
@@ -40,7 +40,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         }
         switch: device.event{
             se for EVENT_ON_CHANGE -> passar para a função com id e novo valor guardado em data
-            
+
         }
 
 
@@ -77,7 +77,7 @@ void MQTTPublish(const char* topic, char* message)
     pubmsg.payloadlen = (int)strlen(message);
     pubmsg.qos = QOS;
     pubmsg.retained = 1;
-    MQTTClient_publishMessage(client, topico, &pubmsg, &token);
+    MQTTClient_publishMessage(client, topic, &pubmsg, &token);
     /*printf("Waiting for publication of message: %s\n"
             "topic: %s\n client: %s\n",
             message, TOPIC, CLIENTID);*/
