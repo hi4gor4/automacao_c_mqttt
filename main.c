@@ -8,6 +8,7 @@
 #include <wiringPi.h>
 #include "MQTTClient.h"
 
+typedef enum {false, true} bool;
 
 #define TOUT_TO_PUBLISH 5000
 
