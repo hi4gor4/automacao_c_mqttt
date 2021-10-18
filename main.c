@@ -48,10 +48,10 @@ int main(int argc, char* argv[])
             delay(2000);
             
         }*/
-        sprintf(json, "{ \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s }};", 1, "OnChangeState", "true");
-        printf("batata %s", json);
-        printf(json)
-        MQTTPublish(TOPIC, "json");
+        // sprintf(json, "{ \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s }};", 1, "OnChangeState", "true");
+        // printf("batata %s", json);
+        // printf(json)
+        MQTTPublish(TOPIC,  "{ \"id\": 1, \"event\": \"Okdljwenhf\", \"data\": { \"state\": turedsdfvs }};");
         delay(3000);
 
     
