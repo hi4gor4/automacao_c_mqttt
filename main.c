@@ -1,52 +1,19 @@
-// Hiago
-
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#include <wiringPi.h>
+#include "credentials.h"
 #include "mqtt.h"
 #include "credentials.h"
-#include "MQTTClient.h"
+#include <wiringPi.h>
+
 
 #define TOUT_TO_PUBLISH 5000
-#define PIN_BTN1 27
-#define PIN_LUZ1 26
 
-
-
-bool estado_luz1 =  false;
-bool estado_luz1 =  false;
 
 MQTTClient client;
 
 /* Subscribed MQTT topic listener function. */
-void trataSubscribe(char* mensagem){
-    if (mensagem[0] == 1){
-        //Define a alteração do estado de funcionamento das lampadas
-        if (estado_luz1){
-            estado_luz1 = false;
-        }else{
-            estado_luz1 = true;
-        }
-
-         if (estado_luz2){
-            estado_luz2 = false;
-        }else{
-            estado_luz2 = true;
-        }
-
-    }
-
-    //aqui eu vou tratar o recebimento da mensaagem do topico
-    /*
-    1- Acionamento ou desacionamento da lampada
-
-    */
-
-
-}
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
     if(message) {
@@ -55,7 +22,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         printf("  message: ");
         printf("%s\n", (char*)message->payload);
     }
-    trataSubscribe(message)
+
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
 
@@ -123,52 +90,22 @@ void MQTTBegin()
     }
 }
 
-
-
+/* This program connects to https://www.maqiatto.com/
+ * Periodically publishes test messages with your credentials.
+ */
 
 int main(int argc, char* argv[])
 {
     MQTTBegin();
 
     MQTTSubscribe(TOPIC);
-    wiringPiSetupGpio();
-    // pinMode(PIN_LUZ1, OUTPUT);
-    // digitalWrite(PIN_LUZ1, 1);
-    // delay(5000);
-    // pinMode(PIN_BTN1, INPUT);
-    // pullUpDnControl(PIN_BTN1, PUD_UP);
-    
 
-    /*while(1){
-        if(digitalRead(PIN_BTN1) == LOW){
-            if(estado_luz1 ==0){
-                estado_luz1 =1;
-                digitalWrite(PIN_LUZ1, HIGH);
-                delay(1000);
-                sprintf(json, " { \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s });", 1, "OnChangeState", "true");
-                MQTTPublish(TOPIC, json);
-            }else{
-                estado_luz1 = 0;
-                digitalWrite(PIN_LUZ1, LOW);
-                delay(500);
-                sprintf(json, " { \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s });", 1, "OnChangeState", "false");
-                MQTTPublish(TOPIC, json);
-            }
-            while(digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada           
-            delay(2000);
-            
-        }*/
-        // printf("batata %s", json);
-        // printf(json)
-    while (1)
+    while(1) 
     {
-        printf(estado_luz1)        
-        delay(3000);
-    
-    }
-        
+        MQTTPublish(TOPIC, "o pai tá on");
+        sleep(TOUT_TO_PUBLISH / 1000);
+    };
 
-    
     MQTTDisconnect();
 
     return 0;
