@@ -37,20 +37,20 @@ int main(int argc, char* argv[])
                 digitalWrite(PIN_LUZ1, HIGH);
                 delay(1000);
                 MQTTPublish(TOPIC, " {
-                \'id\': %d,
-                \'event\': \'%s\',
-                \'data\': {
-                    \'state\': %s
+                \"id\": %d,
+                \"event\": \"%s\",
+                \"data\": {
+                    \"state\": %s
                 });", 1, "OnChangeState", "true");
             }else{
                 estado_luz1 = 0;
                 digitalWrite(PIN_LUZ1, LOW);
                 delay(500);
                  MQTTPublish(TOPIC, " {
-                \'id\': %d,
-                \'event\': \'%s\',
-                \'data\': {
-                    \'state\': %s
+                \"id\": %d,
+                \"event\": \"%s\",
+                \"data\": {
+                    \"state\": %s
                 });", 1, "OnChangeState", "false");
             
             }
