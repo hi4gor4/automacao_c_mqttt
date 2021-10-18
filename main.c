@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
 
     while(1) 
     {
-        MQTTPublish(TOPIC, "o pai tá on");
+        MQTTPublish(TOPICLAMPADA1, "o pai tá on");
         sleep(TOUT_TO_PUBLISH / 1000);
     };
 
