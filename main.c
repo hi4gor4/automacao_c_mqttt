@@ -11,6 +11,15 @@
 
 #define TOUT_TO_PUBLISH 5000
 
+#define PIN_BTN1 27
+#define PIN_LUZ1 26
+
+
+
+
+//Variaveis globais
+bool luz1 = false;
+bool luz2 = false;
 
 MQTTClient client;
 
@@ -100,15 +109,31 @@ int main(int argc, char* argv[])
     MQTTBegin();
 
     MQTTSubscribe(TOPICLAMPADA1);
-    
     MQTTSubscribe(TOPICLAMPADA2);
-    printf("depurando a moda antiga");
-
+    wiringPiSetupGpio();
+    pinMode(PIN_LUZ1, OUTPUT);
+    digitalWrite(PIN_LUZ1, 1);
+    pinMode(PIN_BTN1, INPUT);
+    pullUpDnControl(PIN_BTN1, PUD_UP);
     while(1) 
     {
-        MQTTPublish(TOPICLAMPADA1, "o pai tá on");
-        sleep(TOUT_TO_PUBLISH / 1000);
-        printf("opaaaa");
+        if(digitalRead(PIN_BTN1) == LOW){
+            if(luz1){
+                luz1 = false;
+                digitalWrite(PIN_LUZ1, HIGH);
+                delay(1000);//delay 1seg
+                MQTTPublish(TOPICLAMPADA1, "LOW");
+            }else{
+                luz1 = true;
+                digitalWrite(PIN_LUZ1, LOW);
+                delay(1000);
+                MQTTPublish(TOPICLAMPADA1, "HIGH");
+            
+            }
+            while(digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada           
+            delay(1000);
+            
+        }
     };
 
     MQTTDisconnect();
