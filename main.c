@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
     MQTTBegin();
 
     MQTTSubscribe(TOPIC);
-
+    printf("passou");
     while(1) 
     {
         MQTTPublish(TOPIC, "o pai tá on");
