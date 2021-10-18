@@ -51,7 +51,6 @@ int main(int argc, char* argv[])
         sprintf(json, " { \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s });", 1, "OnChangeState", "true");
         MQTTPublish(TOPIC, json);
         delay(3000);
-    }
 
     MQTTDisconnect();
 
