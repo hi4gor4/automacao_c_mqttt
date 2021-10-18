@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
     {
         MQTTPublish(TOPICLAMPADA1, "o pai tá on");
         sleep(TOUT_TO_PUBLISH / 1000);
-        printf('opaaaa');
+        printf("opaaaa");
     };
 
     MQTTDisconnect();
