@@ -6,6 +6,7 @@
 #include "mqtt.h"
 #include "credentials.h"
 #include <wiringPi.h>
+#include "MQTTClient.h"
 
 
 #define TOUT_TO_PUBLISH 5000
