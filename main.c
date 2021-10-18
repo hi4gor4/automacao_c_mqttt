@@ -47,7 +47,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     return 1;
 }
 
-void verify_topics(void *context, char *topicName, int topicLen, MQTTClient_message *message){
+int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_message *message){
     if(message){
         printf("Message arrived\n");
         printf("  topic: %s\n", topicName);
@@ -59,6 +59,7 @@ void verify_topics(void *context, char *topicName, int topicLen, MQTTClient_mess
         luz1 = chartobool(payload);
     }
     }
+    return 1;
 }
 void connlost(void *context, char *cause)
 {
