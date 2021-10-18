@@ -36,23 +36,13 @@ int main(int argc, char* argv[])
                 estado_luz1 =1;
                 digitalWrite(PIN_LUZ1, HIGH);
                 delay(1000);
-                MQTTPublish(TOPIC, " {
-                \"id\": %d,
-                \"event\": \"%s\",
-                \"data\": {
-                    \"state\": %s
-                });", 1, "OnChangeState", "true");
+                MQTTPublish(TOPIC, " { \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s });", 1, "OnChangeState", "true");
             }else{
                 estado_luz1 = 0;
                 digitalWrite(PIN_LUZ1, LOW);
                 delay(500);
-                 MQTTPublish(TOPIC, " {
-                \"id\": %d,
-                \"event\": \"%s\",
-                \"data\": {
-                    \"state\": %s
-                });", 1, "OnChangeState", "false");
-            
+                MQTTPublish(TOPIC, " { \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s });", 1, "OnChangeState", "false");
+
             }
             while(digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(2000);
