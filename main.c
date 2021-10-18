@@ -55,7 +55,7 @@ void MQTTPublish(const char* topic, char* message)
     pubmsg.payloadlen = (int)strlen(message);
     pubmsg.qos = QOS;
     pubmsg.retained = 1;
-    MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
+    MQTTClient_publishMessage(client, topic, &pubmsg, &token);
     /*printf("Waiting for publication of message: %s\n"
             "topic: %s\n client: %s\n",
             message, TOPIC, CLIENTID);*/
