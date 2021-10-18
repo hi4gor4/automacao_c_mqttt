@@ -40,6 +40,19 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     return 1;
 }
 
+void verify_topics(void *context, char *topicName, int topicLen, MQTTClient_message *message)){
+    if(message){
+        printf("Message arrived\n");
+        printf("  topic: %s\n", topicName);
+        printf("  message: ");
+        printf("%s\n", (char*)message->payload);
+    
+    char* payload = message->payload;
+    if(topicName == TOPICLAMPADA1){
+        luz1 = payload;
+    }
+    }
+}
 void connlost(void *context, char *cause)
 {
     printf("Connection lost\n");
@@ -92,7 +105,7 @@ void MQTTBegin()
         MQTTCLIENT_PERSISTENCE_NONE, NULL);
 
     /* Set connection, subscribe and publish callbacks. */
-    MQTTClient_setCallbacks(client, NULL, connlost, msgarrvd, NULL);
+    MQTTClient_setCallbacks(client, NULL, connlost, verify_topics, NULL);
 
     while ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
     {
@@ -121,13 +134,9 @@ int main(int argc, char* argv[])
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
                 luz1 = false;
-                digitalWrite(PIN_LUZ1, HIGH);
-                delay(1000);//delay 1seg
                 MQTTPublish(TOPICLAMPADA1, "LOW");
             }else{
                 luz1 = true;
-                digitalWrite(PIN_LUZ1, LOW);
-                delay(1000);
                 MQTTPublish(TOPICLAMPADA1, "HIGH");
             
             }
@@ -135,6 +144,18 @@ int main(int argc, char* argv[])
             delay(1000);
             
         }
+
+        //Verifica estados de pinos
+        if(luz1){
+            digitalWrite(PIN_LUZ1, LOW);
+
+        }else{
+            digitalWrite(PIN_LUZ1, HIGH);
+        }
+
+    
+    
+    
     };
 
     MQTTDisconnect();
