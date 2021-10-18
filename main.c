@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     MQTTSubscribe(TOPIC);
     wiringPiSetupGpio();
 
-
+     char* json;
     pinMode(PIN_LUZ1, OUTPUT);
     digitalWrite(PIN_LUZ1, 1);
     delay(5000);
@@ -36,14 +36,14 @@ int main(int argc, char* argv[])
                 estado_luz1 =1;
                 digitalWrite(PIN_LUZ1, HIGH);
                 delay(1000);
-                sprintf(json, " { \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s });", 1, "OnChangeState", "true"));
+                sprintf(json, " { \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s });", 1, "OnChangeState", "true");
                 MQTTPublish(TOPIC, json);
             }else{
                 estado_luz1 = 0;
                 digitalWrite(PIN_LUZ1, LOW);
                 delay(500);
-                MQTTPublish(TOPIC, " { \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s });", 1, "OnChangeState", "false");
-
+                sprintf(json, " { \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s });", 1, "OnChangeState", "false");
+                MQTTPublish(TOPIC, json);
             }
             while(digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(2000);
