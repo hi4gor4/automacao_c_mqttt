@@ -102,12 +102,13 @@ int main(int argc, char* argv[])
     MQTTSubscribe(TOPICLAMPADA1);
     
     MQTTSubscribe(TOPICLAMPADA2);
-  
+    printf("depurando a moda antiga");
 
     while(1) 
     {
         MQTTPublish(TOPICLAMPADA1, "o pai tá on");
         sleep(TOUT_TO_PUBLISH / 1000);
+        printf('opaaaa');
     };
 
     MQTTDisconnect();

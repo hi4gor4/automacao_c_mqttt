@@ -13,7 +13,7 @@
  */
 #define TOPIC    "hiago23rangel@gmail.com/pbl2"
 
-#define TOPICLAMPADA1 "hiago23rangel@gmail.com/r_estadol1"
-#define TOPICLAMPADA2 "hiago23rangel@gmail.com/r_estadol2"
+#define TOPICLAMPADA1 "hiago23rangel@gmail.com/luz1"
+#define TOPICLAMPADA2 "hiago23rangel@gmail.com/luz2"
 
 #endif /* LINUX_CREDENTIALS */
