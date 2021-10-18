@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
         // sprintf(json, "{ \"id\": %d, \"event\": \"%s\", \"data\": { \"state\": %s }};", 1, "OnChangeState", "true");
         // printf("batata %s", json);
         // printf(json)
-        MQTTPublish(TOPIC,  "{ \"id\": 1, \"event\": \"Okdljwenhf\", \"data\": { \"state\": turedsdfvs }};");
+        MQTTPublish(TOPIC,  "{ id: 1, event: Okdljwenhf, data: { state: turedsdfvs }};");
         delay(3000);
 
     
