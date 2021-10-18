@@ -99,8 +99,11 @@ int main(int argc, char* argv[])
 {
     MQTTBegin();
 
-    MQTTSubscribe(TOPIC);
-    printf("passou");
+    MQTTSubscribe(TOPICLAMPADA1);
+    
+    MQTTSubscribe(TOPICLAMPADA2);
+  
+
     while(1) 
     {
         MQTTPublish(TOPIC, "o pai tá on");
