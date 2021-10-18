@@ -7,18 +7,8 @@
 #include "mqtt.h"
 #include "credentials.h"
 
-#define EVENT_ON_CHANGE "OnChangeState"
-
 MQTTClient client;
 
-
-/*void setChangeState(int id, bool state){
-
-
-    //TODO mudar o estado do dispositivo com esse id
-    
-}
-*/
 /* Subscribed MQTT topic listener function. */
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
@@ -28,24 +18,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         printf("  message: ");
         printf("%s\n", (char*)message->payload);
     }
-    //TODO transformar minha mensagem em json
-    //TODO Filtrar eventos switch
-    //TODO enviar para função que lida com esse evento
-    /*
-        {
-        "id": 0,
-        "event": "OnChangeState",
-        "data": {
-            "state": true
-        }
-        switch: device.event{
-            se for EVENT_ON_CHANGE -> passar para a função com id e novo valor guardado em data
 
-        }
-
-
-    */
-    
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
 
