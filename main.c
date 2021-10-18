@@ -40,7 +40,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     return 1;
 }
 
-void verify_topics(void *context, char *topicName, int topicLen, MQTTClient_message *message)){
+void verify_topics(void *context, char *topicName, int topicLen, MQTTClient_message *message){
     if(message){
         printf("Message arrived\n");
         printf("  topic: %s\n", topicName);
