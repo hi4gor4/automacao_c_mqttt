@@ -25,6 +25,13 @@ bool luz2 = false;
 MQTTClient client;
 
 /* Subscribed MQTT topic listener function. */
+bool chartobool(char* msg){
+    if(msg = "true"){
+        return true;
+    }else{
+        return false;
+    }
+}
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
     if(message) {
@@ -49,7 +56,7 @@ void verify_topics(void *context, char *topicName, int topicLen, MQTTClient_mess
     
     char* payload = message->payload;
     if(topicName == TOPICLAMPADA1){
-        luz1 = payload;
+        luz1 = chartobool(payload);
     }
     }
 }
