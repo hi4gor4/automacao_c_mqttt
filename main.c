@@ -134,6 +134,11 @@ int main(int argc, char* argv[])
     digitalWrite(PIN_LUZ1, 1);
     pinMode(PIN_BTN1, INPUT);
     pullUpDnControl(PIN_BTN1, PUD_UP);
+    pinMode(LED1, OUTPUT);
+    digitalWrite(LED1, 1);
+    pinMode(PIN_BTN2, INPUT);
+    pullUpDnControl(PIN_BTN2, PUD_UP);
+
     while(1) 
     {
         if(digitalRead(PIN_BTN1) == LOW){
@@ -147,6 +152,16 @@ int main(int argc, char* argv[])
             delay(1000);
             
         }
+        if(digitalRead(PIN_BTN2) == LOW){
+            if(luz1){
+                MQTTPublish(TOPICLAMPADA2, "1");
+            }else{
+                MQTTPublish(TOPICLAMPADA2, "0");
+            }
+            while(digitalRead(PIN_BTN2) == LOW); // aguarda enquato chave ainda esta pressionada           
+            delay(1000);
+            
+        }
 
         //Verifica estados de pinos
         if(luz1){
@@ -156,7 +171,13 @@ int main(int argc, char* argv[])
             digitalWrite(PIN_LUZ1, HIGH);
         }
 
-    
+        if(luz2){
+            digitalWrite(LED1, HIGH);
+
+        }else{
+            digitalWrite(LED1, LOW);
+        }
+
     
     
     };
