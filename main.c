@@ -26,7 +26,7 @@ MQTTClient client;
 
 /* Subscribed MQTT topic listener function. */
 bool chartobool(char* msg){
-    if(msg == "true"){
+    if(msg[0] == "1"){
         return true;
     }else{
         return false;
@@ -54,11 +54,11 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("  message: ");
         printf("%s\n", (char*)message->payload);
     
+    }
     char* payload = message->payload;
     if(topicName == TOPICLAMPADA1){
         printf("entraste");
         luz1 = chartobool(payload);
-    }
     }
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
@@ -145,10 +145,10 @@ int main(int argc, char* argv[])
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
                 luz1 = false;
-                MQTTPublish(TOPICLAMPADA1, "LOW");
+                MQTTPublish(TOPICLAMPADA1, "0");
             }else{
                 luz1 = true;
-                MQTTPublish(TOPICLAMPADA1, "HIGH");
+                MQTTPublish(TOPICLAMPADA1, "1");
             
             }
             while(digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada           
