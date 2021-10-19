@@ -161,7 +161,7 @@ int main(int argc, char* argv[]){
     pinMode(LED2, OUTPUT);
     digitalWrite(LED2, 1);
     digitalWrite(LED3, OUTPUT);
-    digitalWrite(LED3, 1);
+    digitalWrite(LED3, "HIGH");
     pinMode(PIN_BTN1, INPUT);
     pullUpDnControl(PIN_BTN1, PUD_UP);
     pinMode(PIN_BTN2, INPUT);
