@@ -8,7 +8,6 @@
 #include <wiringPi.h>
 #include "MQTTClient.h"
 
-typedef enum {false, true} bool;
 
 #define TOUT_TO_PUBLISH 5000
 
@@ -20,15 +19,13 @@ typedef enum {false, true} bool;
 #define TOPICLAMPADA2 "hiago23rangel@gmail.com/luz2"
 
 //Variaveis globais
-bool luz1 = false;
-bool luz2 = false;
+int luz1 = 0;
+int luz2 = 0;
 
 MQTTClient client;
 
 /* Subscribed MQTT topic listener function. */
-bool chartobool(char* msg){
-    return msg == "true";
-}
+
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
     if(message) {
@@ -54,8 +51,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         //printf("\n\n\n%d\n\n\n",strcmp("hiago23rangel@gmail.com/luz1", topicName)+1);
         int hiaguinhogameplays = strcmp("hiago23rangel@gmail.com/luz1", topicName);
         if(hiaguinhogameplays == 0){
-            printf("entraste");
-            printf("%d",chartobool(message));
+            printf(payload);
     
         }
         printf("%d",hiaguinhogameplays);
@@ -144,9 +140,9 @@ int main(int argc, char* argv[])
     {
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
-                MQTTPublish(TOPICLAMPADA1, "false");
+                MQTTPublish(TOPICLAMPADA1, "0");
             }else{
-                MQTTPublish(TOPICLAMPADA1, "true");
+                MQTTPublish(TOPICLAMPADA1, "1");
             
             }
             while(digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada           
