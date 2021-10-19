@@ -13,6 +13,7 @@
 
 #define PIN_BTN1 27
 #define PIN_BTN2 17
+#define PIN_BTN3 16
 #define PIN_LUZ1 26
 #define LED1 22
 #define DHT 23
@@ -27,15 +28,18 @@
 #define TOPICALARM "hiago23rangel@gmail.com/alarm2"
 
 //Variaveis globais
-int luz1;
+int luz1 = 0;
 int luz2 = 0;
+int max = 0;
+int min = 0;
+int alarm = 0;
+int segurança = 0;
 
 MQTTClient client;
 
 /* Subscribed MQTT topic listener function. */
 
-int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
-{
+int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message){
     if(message) {
         printf("Message arrived\n");
         printf("  topic: %s\n", topicName);
@@ -56,20 +60,23 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("  message: ");
         printf("%s\n", (char*)message->payload);
         char* payload = message->payload;
-        //printf("\n\n\n%d\n\n\n",strcmp("hiago23rangel@gmail.com/luz1", topicName)+1);
         if(!strcmp(TOPICLAMPADA1, topicName)){
             luz1 =atoi(payload);
         }else if (!strcmp(TOPICLAMPADA2,topicName)){
             luz2 = atoi(payload);
+        }else if(!strcmp(TOPICMIN, topicName)){
+            min = atoi(payload);
+        }else if(!strcmp(TOPICMAX, topicName)){
+            max = atoi(payload);
+        }else if(!strcmp(TOPICACTIVATE, topicName)){
+            segurança = atoi(payload);
         }
-        
     }
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
     return 1;
 }
-void connlost(void *context, char *cause)
-{
+void connlost(void *context, char *cause){
     printf("Connection lost\n");
     if (cause)
         printf("Reason is : %s\n", cause);
@@ -85,8 +92,7 @@ void MQTTSubscribe(const char* topic)
     MQTTClient_subscribe(client, topic, QOS);
 }
 
-void MQTTPublish(const char* topic, char* message)
-{
+void MQTTPublish(const char* topic, char* message){
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
     MQTTClient_deliveryToken token;
     pubmsg.payload = message;
@@ -101,14 +107,12 @@ void MQTTPublish(const char* topic, char* message)
     /*printf("Message with delivery token %d delivered\n", token);*/
 }
 
-void MQTTDisconnect()
-{
+void MQTTDisconnect(){
     MQTTClient_disconnect(client, TIMEOUT);
     MQTTClient_destroy(&client);
 }
 
-void MQTTBegin()
-{
+void MQTTBegin(){
     int rc = -1;
     printf("Initializing MQTT...\n");
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
@@ -138,6 +142,9 @@ int main(int argc, char* argv[]){
 
     MQTTSubscribe(TOPICLAMPADA1);
     MQTTSubscribe(TOPICLAMPADA2);
+    MQTTSubscribe(TOPICMAX);
+    MQTTSubscribe(TOPICMIN);
+    MQTTSubscribe(TOPICALARM);
     wiringPiSetupGpio();
     pinMode(PIN_LUZ1, OUTPUT);
     digitalWrite(PIN_LUZ1, 1);
@@ -163,10 +170,10 @@ int main(int argc, char* argv[]){
             
         }
         if(digitalRead(PIN_BTN2) == LOW){
-            if(luz2){
-                MQTTPublish(TOPICLAMPADA2, "0");
-            }else{
+            if(luz1){
                 MQTTPublish(TOPICLAMPADA2, "1");
+            }else{
+                MQTTPublish(TOPICLAMPADA2, "0");
             }
             while(digitalRead(PIN_BTN2) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
@@ -175,7 +182,6 @@ int main(int argc, char* argv[]){
         //Verifica estados de pinos
         if(luz1){
             digitalWrite(PIN_LUZ1, LOW);
-
         }else{
             digitalWrite(PIN_LUZ1, HIGH);
         }
@@ -183,7 +189,12 @@ int main(int argc, char* argv[]){
             digitalWrite(LED1, HIGH);
         }else{
             digitalWrite(LED1, LOW);
-        }     
+        }
+
+        if(digitalRead(PIN_BTN3) == LOW && segurança == 1){
+            MQTTPublish(TOPICALARM, "1");
+        }
+
     };
 
     MQTTDisconnect();
