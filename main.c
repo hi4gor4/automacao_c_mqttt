@@ -16,7 +16,8 @@ typedef enum {false, true} bool;
 #define PIN_LUZ1 26
 
 
-
+#define TOPICLAMPADA1 "hiago23rangel@gmail.com/luz1"
+#define TOPICLAMPADA2 "hiago23rangel@gmail.com/luz2"
 
 //Variaveis globais
 bool luz1 = false;
@@ -145,10 +146,10 @@ int main(int argc, char* argv[])
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
                 luz1 = false;
-                MQTTPublish(TOPICLAMPADA1, "0");
+                MQTTPublish(TOPICLAMPADA1, "falseb");
             }else{
                 luz1 = true;
-                MQTTPublish(TOPICLAMPADA1, "1");
+                MQTTPublish(TOPICLAMPADA1, "trueb");
             
             }
             while(digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada           
