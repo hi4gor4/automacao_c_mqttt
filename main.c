@@ -12,8 +12,9 @@
 #define TOUT_TO_PUBLISH 5000
 
 #define PIN_BTN1 27
+#define PIN_BTN2 17
 #define PIN_LUZ1 26
-
+#define LED1 22
 
 #define TOPICLAMPADA1 "hiago23rangel@gmail.com/luz1"
 #define TOPICLAMPADA2 "hiago23rangel@gmail.com/luz2"
