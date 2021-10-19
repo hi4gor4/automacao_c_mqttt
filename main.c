@@ -194,7 +194,7 @@ int main(int argc, char* argv[]){
         }
 
         if(digitalRead(PIN_BTN3) == LOW){
-            if(seguranca == '1'){
+            if(seguranca == 1){
                 MQTTPublish(TOPICALARM, "1");
                 digitalWrite(LED2, HIGH);
             }else{
