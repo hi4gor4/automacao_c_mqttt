@@ -60,7 +60,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
     printf(TOPICLAMPADA1);
     printf("\n");
     printf(topicName);
-    if(topicName == TOPICLAMPADA1){
+    if(strcmp(TOPICLAMPADA1, topicName) == 0){
         printf("entraste");
         luz1 = chartobool(payload);
     }
