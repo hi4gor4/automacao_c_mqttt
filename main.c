@@ -33,8 +33,8 @@
 //Variaveis globais
 int luz1 = 0;
 int luz2 = 0;
-int max = 30;
-int min = 18;
+int max = 28;
+int min = 10;
 int temp = 25;
 int seguranca = 0;
 
@@ -242,7 +242,6 @@ int main(int argc, char* argv[]){
             digitalWrite(LEDAR, HIGH);
             delay(500);
         }else if(temp < min){
-
             digitalWrite(LEDAR, LOW);
             delay(500);
         }
