@@ -16,6 +16,7 @@
 #define PIN_BTN3 16
 #define PIN_LUZ1 26
 #define LED1 22
+#define LED2 5
 #define DHT 23
 
 
@@ -194,6 +195,7 @@ int main(int argc, char* argv[]){
 
         if(digitalRead(PIN_BTN3) == LOW && segurança == 1){
             MQTTPublish(TOPICALARM, "1");
+            digitalWrite(LED2, HIGH);
         }
 
     };
