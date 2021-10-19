@@ -242,7 +242,6 @@ int main(int argc, char* argv[]){
             digitalWrite(LEDAR, HIGH);
             delay(500);
         }else if(temp < min){
-
             digitalWrite(LEDAR, LOW);
             delay(500);
         }
