@@ -219,14 +219,14 @@ int main(int argc, char* argv[]){
 
         if(digitalRead(PIN_BTN4) == LOW){
             temp += 1;
-            sprintf(str, "%d", temp)
+            sprintf(str, "%d", temp);
             MQTTPublish(TOPICTEMP, str);
             while(digitalRead(PIN_BTN4) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
         }
         if(digitalRead(PIN_BTN5) == LOW){
             temp -=1;
-            sprintf(str, "%d", temp)
+            sprintf(str, "%d", temp);
             MQTTPublish(TOPICTEMP, str);
             while(digitalRead(PIN_BTN5) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
