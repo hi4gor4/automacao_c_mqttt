@@ -34,7 +34,7 @@ int luz2 = 0;
 int max = 0;
 int min = 0;
 int alarm = 0;
-int segurança = 0;
+int seguranca = 0;
 
 MQTTClient client;
 
@@ -70,7 +70,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         }else if(!strcmp(TOPICMAX, topicName)){
             max = atoi(payload);
         }else if(!strcmp(TOPICACTIVATE, topicName)){
-            segurança = atoi(payload);
+            seguranca = atoi(payload);
         }
     }
     MQTTClient_freeMessage(&message);
@@ -155,10 +155,10 @@ int main(int argc, char* argv[]){
     digitalWrite(LED1, 1);
     pinMode(PIN_BTN2, INPUT);
     pullUpDnControl(PIN_BTN2, PUD_UP);
-    pintMode(POT, INPUT);
     pinMode(PIN_BTN3, INPUT);
     pullUpDnControl(PIN_BTN3, PUD_UP);
     pinMode(LED2, OUTPUT);
+
     while(1){
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
@@ -193,7 +193,7 @@ int main(int argc, char* argv[]){
             digitalWrite(LED1, LOW);
         }
 
-        if(digitalRead(PIN_BTN3) == LOW && segurança == 1){
+        if(digitalRead(PIN_BTN3) == LOW && seguranca == 1){
             MQTTPublish(TOPICALARM, "1");
             digitalWrite(LED2, HIGH);
         }
