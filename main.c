@@ -9,13 +9,13 @@
 #include "MQTTClient.h"
 #include <time.h>
 
-#define TOPICLAMPADA1 "hiago23rangel@gmail.com/luz1"
-#define TOPICLAMPADA2 "hiago23rangel@gmail.com/luz2"
-#define TOPICMAX "hiago23rangel@gmail.com/max"
-#define TOPICMIN "hiago23rangel@gmail.com/min"
-#define TOPICTEMP "hiago23rangel@gmail.com/temp"
-#define TOPICACTIVATE "hiago23rangel@gmail.com/alarm1"
-#define TOPICALARM "hiago23rangel@gmail.com/alarm2"
+#define TOPICLAMPADA1 "luz1"
+#define TOPICLAMPADA2 "luz2"
+#define TOPICMAX "max"
+#define TOPICMIN "min"
+#define TOPICTEMP "temp"
+#define TOPICACTIVATE "alarm1"
+#define TOPICALARM "alarm2"
 
 #define TOUT_TO_PUBLISH 5000
 
