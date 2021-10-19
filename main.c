@@ -19,13 +19,15 @@
 
 #define TOUT_TO_PUBLISH 5000
 
-#define PIN_BTN1 27
+#define PIN_BTN1 27 
 #define PIN_BTN2 17
 #define PIN_BTN3 16
+#define PIN_BTN4 5
+#define PIN_BTN5 23
 #define PIN_LUZ1 26
 #define LED1 22
 #define LED2 6
-#define DHT 23
+#define LED3 24
 
 
 //Variaveis globais
@@ -33,19 +35,12 @@ int luz1 = 0;
 int luz2 = 0;
 int max = 0;
 int min = 0;
+int temp = 25;
 int seguranca = 0;
 
 MQTTClient client;
 
 /* Subscribed MQTT topic listener function. */
-
-int getCurrentHour(){
-    time_t now = time(NULL);
-    struct tm *tm_struct = localtime(&now);
-    int hour = tm_struct->tm_hour;
-    return hour;
-}
-
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message){
     if(message) {
         printf("Message arrived\n");
@@ -145,26 +140,34 @@ void MQTTBegin(){
  */
 
 int main(int argc, char* argv[]){
+    //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
     MQTTBegin();
-
     MQTTSubscribe(TOPICLAMPADA1);
     MQTTSubscribe(TOPICLAMPADA2);
     MQTTSubscribe(TOPICMAX);
     MQTTSubscribe(TOPICMIN);
     MQTTSubscribe(TOPICALARM);
     MQTTSubscribe(TOPICACTIVATE);
+    
+    //Configurando os pinos da raspberry
     wiringPiSetupGpio();
     pinMode(PIN_LUZ1, OUTPUT);
     digitalWrite(PIN_LUZ1, 1);
-    pinMode(PIN_BTN1, INPUT);
-    pullUpDnControl(PIN_BTN1, PUD_UP);
     pinMode(LED1, OUTPUT);
     digitalWrite(LED1, 1);
+    pinMode(LED2, OUTPUT);
+    digitalWrite(LED2, 1);
+    pinMode(PIN_BTN1, INPUT);
+    pullUpDnControl(PIN_BTN1, PUD_UP);
     pinMode(PIN_BTN2, INPUT);
     pullUpDnControl(PIN_BTN2, PUD_UP);
     pinMode(PIN_BTN3, INPUT);
     pullUpDnControl(PIN_BTN3, PUD_UP);
-    pinMode(LED2, OUTPUT);
+    pinMode(PIN_BTN4, INPUT);
+    pullUpDnControl(PIN_BTN4, PUD_UP);
+    pinMode(PIN_BTN5, INPUT);
+    pullUpDnControl(PIN_BTN5, PUD_UP);
+   
 
     printf("\n\n\n\n%d\n\n\n\n",getCurrentHour());
 
@@ -213,6 +216,25 @@ int main(int argc, char* argv[]){
 
         if(!seguranca){
             digitalWrite(LED2, LOW);
+        }
+
+        if(digitalRead(PIN_BTN4) == LOW){
+            temp += 1;
+            MQTTPublish(TOPICTEMP, temp);
+            while(digitalRead(PIN_BTN4) == LOW); // aguarda enquato chave ainda esta pressionada           
+            delay(1000);
+        }
+        if(digitalRead(PIN_BTN5) == LOW){
+            temp -=1;
+            MQTTPublish(TOPICTEMP, temp);
+            while(digitalRead(PIN_BTN5) == LOW); // aguarda enquato chave ainda esta pressionada           
+            delay(1000);
+        }
+
+        if(temp >= max){
+            digitalWrite(LED3, HIGH);
+        }else if(temp < min){
+            digitalWrite(LED3, LOW);
         }
     };
 

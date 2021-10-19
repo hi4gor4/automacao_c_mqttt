@@ -12,5 +12,4 @@
  * To add topics, see https://www.maqiatto.com/configure
  */
 
-
 #endif /* LINUX_CREDENTIALS */
