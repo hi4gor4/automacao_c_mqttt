@@ -146,6 +146,7 @@ int main(int argc, char* argv[]){
     MQTTSubscribe(TOPICLAMPADA2);
     MQTTSubscribe(TOPICMAX);
     MQTTSubscribe(TOPICMIN);
+    MQTTSubscribe(TOPICTEMP);
     MQTTSubscribe(TOPICALARM);
     MQTTSubscribe(TOPICACTIVATE);
     
@@ -159,6 +160,7 @@ int main(int argc, char* argv[]){
     digitalWrite(LED1, 1);
     pinMode(LED2, OUTPUT);
     digitalWrite(LED2, 1);
+    digitalWrite(LED3, OUTPUT);
     pinMode(PIN_BTN1, INPUT);
     pullUpDnControl(PIN_BTN1, PUD_UP);
     pinMode(PIN_BTN2, INPUT);
