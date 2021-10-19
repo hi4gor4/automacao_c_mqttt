@@ -51,7 +51,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         //printf("\n\n\n%d\n\n\n",strcmp("hiago23rangel@gmail.com/luz1", topicName)+1);
         int hiaguinhogameplays = strcmp("hiago23rangel@gmail.com/luz1", topicName);
         if(hiaguinhogameplays == 0){
-            printf("\n\n\n %s \n\n\n"payload);
+            printf("\n\n\n %s \n\n\n",payload);
     
         }
         printf("%d",hiaguinhogameplays);
