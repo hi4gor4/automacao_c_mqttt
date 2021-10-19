@@ -27,11 +27,7 @@ MQTTClient client;
 
 /* Subscribed MQTT topic listener function. */
 bool chartobool(char* msg){
-    if(msg == "true"){
-        return true;
-    }else{
-        return false;
-    }
+    return msg == "true";
 }
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
@@ -62,7 +58,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
             luz1 = chartobool(payload);
     
         }
-        printf("%d",hiaguinhogameplays);
+        printf("%d",,hiaguinhogameplays);
     }
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
