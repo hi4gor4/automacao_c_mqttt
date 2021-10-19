@@ -55,7 +55,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("  message: ");
         printf("%s\n", (char*)message->payload);
         char* payload = message->payload;
-        printf(topicName);
+        printf(strcmp("hiago23rangel@gmail.com/luz1", topicName));
         if(strcmp("hiago23rangel@gmail.com/luz1", topicName) == 1){
             printf("entraste");
             luz1 = chartobool(payload);
