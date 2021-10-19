@@ -59,7 +59,9 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
     char* payload = message->payload;
     printf(topicName);
     printf("\n");
-    if(strcmp(TOPICLAMPADA1, topicName) == 0){
+    printf(TOPICLAMPADA1);
+
+    if(strcmp("hiago23rangel@gmail.com/luz1", topicName) == 0){
         printf("entraste");
         luz1 = chartobool(payload);
     }
@@ -147,11 +149,9 @@ int main(int argc, char* argv[])
     {
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
-                luz1 = false;
-                MQTTPublish(TOPICLAMPADA1, "falseb");
+                MQTTPublish(TOPICLAMPADA1, "false");
             }else{
-                luz1 = true;
-                MQTTPublish(TOPICLAMPADA1, "trueb");
+                MQTTPublish(TOPICLAMPADA1, "true");
             
             }
             while(digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada           
