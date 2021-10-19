@@ -57,9 +57,6 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
     
     }
     char* payload = message->payload;
-    printf(topicName);
-    printf("\n");
-    printf(TOPICLAMPADA1);
 
     if(strcmp("hiago23rangel@gmail.com/luz1", topicName) == 0){
         printf("entraste");
