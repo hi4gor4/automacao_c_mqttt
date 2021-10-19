@@ -52,7 +52,10 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         //printf("\n\n\n%d\n\n\n",strcmp("hiago23rangel@gmail.com/luz1", topicName)+1);
         if(!strcmp(TOPICLAMPADA1, topicName)){
             luz1 =atoi(payload);
+        }else if (!strcmp(TOPICLAMPADA2,topicName)){
+            luz2 = atoi(payload);
         }
+        
     }
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
@@ -171,12 +174,12 @@ int main(int argc, char* argv[])
             digitalWrite(PIN_LUZ1, HIGH);
         }
 
-        if(luz2){
-            digitalWrite(LED1, HIGH);
-
+        if (luz2){
+            digitalWrite(LED1,HIGH);
         }else{
             digitalWrite(LED1, LOW);
-        }
+        }    
+    
 
     
     
