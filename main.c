@@ -226,7 +226,13 @@ int main(int argc, char* argv[]){
             MQTTPublish(TOPICTEMP, str);
             while(digitalRead(PIN_BTN4) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
+            if(temp >= max){
+                digitalWrite(LEDAR, HIGH);
+                delay(500);
+            }
         }
+    };
+        
 
         //
         if(digitalRead(PIN_BTN5) == LOW){
@@ -236,16 +242,13 @@ int main(int argc, char* argv[]){
             MQTTPublish(TOPICTEMP, str);
             while(digitalRead(PIN_BTN5) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
+            if(temp < min){
+                digitalWrite(LEDAR, LOW);
+                delay(500);
+            }    
         }
 
-        if(temp >= max){
-            digitalWrite(LEDAR, HIGH);
-            delay(500);
-        }else if(temp < min){
-            digitalWrite(LEDAR, LOW);
-            delay(500);
-        }
-    };
+      
 
     MQTTDisconnect();
     return 0;
