@@ -145,6 +145,7 @@ int main(int argc, char* argv[]){
     MQTTSubscribe(TOPICMAX);
     MQTTSubscribe(TOPICMIN);
     MQTTSubscribe(TOPICALARM);
+    MQTTSubscribe(TOPICACTIVATE);
     wiringPiSetupGpio();
     pinMode(PIN_LUZ1, OUTPUT);
     digitalWrite(PIN_LUZ1, 1);
