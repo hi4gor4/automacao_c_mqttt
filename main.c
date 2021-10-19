@@ -19,7 +19,7 @@
 #define TOPICLAMPADA2 "hiago23rangel@gmail.com/luz2"
 
 //Variaveis globais
-int luz1 = 0;
+int luz1;
 int luz2 = 0;
 
 MQTTClient client;
@@ -53,7 +53,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if(hiaguinhogameplays == 0){
             if(atoi(payload)){
                 printf("um vendedor de flores \n\n\n");
-                luz1 = 0;
+                luz1 = 1;
             }else{
                 luz1 = 1;
             }
