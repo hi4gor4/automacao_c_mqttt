@@ -7,6 +7,7 @@
 #include "credentials.h"
 #include <wiringPi.h>
 #include "MQTTClient.h"
+#include <time.h>
 
 
 #define TOUT_TO_PUBLISH 5000
@@ -20,14 +21,6 @@
 #define DHT 23
 
 
-#define TOPICLAMPADA1 "hiago23rangel@gmail.com/luz1"
-#define TOPICLAMPADA2 "hiago23rangel@gmail.com/luz2"
-#define TOPICMAX "hiago23rangel@gmail.com/max"
-#define TOPICMIN "hiago23rangel@gmail.com/min"
-#define TOPICTEMP "hiago23rangel@gmail.com/temp"
-#define TOPICACTIVATE "hiago23rangel@gmail.com/alarm1"
-#define TOPICALARM "hiago23rangel@gmail.com/alarm2"
-
 //Variaveis globais
 int luz1 = 0;
 int luz2 = 0;
@@ -38,6 +31,13 @@ int seguranca = 0;
 MQTTClient client;
 
 /* Subscribed MQTT topic listener function. */
+
+int getCurrentHour(){
+    time_t now = time(NULL);
+    struct tm *tm_struct = localtime(&now);
+    int hour = tm_struct->tm_hour;
+    return hour;
+}
 
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message){
     if(message) {
@@ -158,6 +158,8 @@ int main(int argc, char* argv[]){
     pinMode(PIN_BTN3, INPUT);
     pullUpDnControl(PIN_BTN3, PUD_UP);
     pinMode(LED2, OUTPUT);
+
+    printf("\n\n\n\n%d\n\n\n\n"getCurrentHour());
 
     while(1){
         if(digitalRead(PIN_BTN1) == LOW){
