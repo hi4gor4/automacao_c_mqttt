@@ -26,8 +26,8 @@
 #define PIN_BTN5 23
 #define PIN_LUZ1 26
 #define LED1 22
-#define LED2 6
-#define LEDAR 24
+#define LED2 24
+#define LEDAR 6
 
 
 //Variaveis globais
