@@ -231,6 +231,7 @@ int main(int argc, char* argv[]){
         //
         if(digitalRead(PIN_BTN5) == LOW){
             temp -=1;
+            
             sprintf(str, "%d", temp);
             MQTTPublish(TOPICTEMP, str);
             while(digitalRead(PIN_BTN5) == LOW); // aguarda enquato chave ainda esta pressionada           
@@ -239,8 +240,8 @@ int main(int argc, char* argv[]){
 
         if(temp >= max){
             digitalWrite(LED3, HIGH);
-            printf("ligouuuuuuuuuuuuuuuuuuuuuuuuuuuuu\n\n\n\n\n");
         }else if(temp < min){
+            printf("aquiiiiiiiii");
             digitalWrite(LED3, LOW);
         }
     };
