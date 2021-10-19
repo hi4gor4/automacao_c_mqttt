@@ -157,9 +157,9 @@ int main(int argc, char* argv[])
         }
         if(digitalRead(PIN_BTN2) == LOW){
             if(luz2){
-                MQTTPublish(TOPICLAMPADA2, "1");
-            }else{
                 MQTTPublish(TOPICLAMPADA2, "0");
+            }else{
+                MQTTPublish(TOPICLAMPADA2, "1");
             }
             while(digitalRead(PIN_BTN2) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
