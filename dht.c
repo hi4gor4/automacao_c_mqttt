@@ -18,7 +18,7 @@ void read_dht_data()
 	/* pull pin down for 18 milliseconds */
 	pinMode( DHT_PIN, OUTPUT );
 	digitalWrite( DHT_PIN, LOW );
-	delay( 18 );
+	delay( 50 );
 	/* prepare to read the pin */
 	pinMode( DHT_PIN, INPUT );
 	/* detect change and read data */
