@@ -16,7 +16,7 @@
 #define PIN_BTN3 16
 #define PIN_LUZ1 26
 #define LED1 22
-#define LED2 5
+#define LED2 6
 #define DHT 23
 
 
