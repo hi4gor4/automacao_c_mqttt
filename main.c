@@ -240,9 +240,11 @@ int main(int argc, char* argv[]){
 
         if(temp >= max){
             digitalWrite(LED3, HIGH);
+            delay(500);
         }else if(temp < min){
 
             digitalWrite(LED3, LOW);
+            delay(500);
         }
     };
 
