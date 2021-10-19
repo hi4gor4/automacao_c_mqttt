@@ -159,7 +159,7 @@ int main(int argc, char* argv[]){
     pullUpDnControl(PIN_BTN3, PUD_UP);
     pinMode(LED2, OUTPUT);
 
-    printf("\n\n\n\n%d\n\n\n\n"getCurrentHour());
+    printf("\n\n\n\n%d\n\n\n\n",getCurrentHour());
 
     while(1){
         if(digitalRead(PIN_BTN1) == LOW){
