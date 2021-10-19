@@ -27,7 +27,7 @@
 #define PIN_LUZ1 26
 #define LED1 22
 #define LED2 6
-#define LED3 24
+#define LEDAR 24
 
 
 //Variaveis globais
@@ -160,8 +160,8 @@ int main(int argc, char* argv[]){
     digitalWrite(LED1, 1);
     pinMode(LED2, OUTPUT);
     digitalWrite(LED2, 1);
-    digitalWrite(LED3, OUTPUT);
-    digitalWrite(LED3, HIGH);
+    digitalWrite(LEDAR, OUTPUT);
+    digitalWrite(LEDAR, HIGH);
     pinMode(PIN_BTN1, INPUT);
     pullUpDnControl(PIN_BTN1, PUD_UP);
     pinMode(PIN_BTN2, INPUT);
@@ -239,11 +239,11 @@ int main(int argc, char* argv[]){
         }
 
         if(temp >= max){
-            digitalWrite(LED3, HIGH);
+            digitalWrite(LEDAR, HIGH);
             delay(500);
         }else if(temp < min){
 
-            digitalWrite(LED3, LOW);
+            digitalWrite(LEDAR, LOW);
             delay(500);
         }
     };
