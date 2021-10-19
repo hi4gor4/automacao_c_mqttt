@@ -49,17 +49,9 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("%s\n", (char*)message->payload);
         char* payload = message->payload;
         //printf("\n\n\n%d\n\n\n",strcmp("hiago23rangel@gmail.com/luz1", topicName)+1);
-        int hiaguinhogameplays = strcmp("hiago23rangel@gmail.com/luz1", topicName);
-        if(hiaguinhogameplays == 0){
-            if(atoi(payload)){
-                printf("um vendedor de flores \n\n\n");
-                luz1 = 1;
-            }else{
-                luz1 = 0;
-            }
-    
+        if(!strcmp(TOPICLAMPADA1, topicName)){
+            luz1 =atoi(payload);
         }
-        printf("%d",hiaguinhogameplays);
     }
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
