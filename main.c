@@ -227,7 +227,7 @@ int main(int argc, char* argv[]){
             while(digitalRead(PIN_BTN4) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
             if(temp >= max){
-                digitalWrite(LEDAR, HIGH);
+                digitalWrite(LED2, HIGH);
                 delay(500);
             }
         }
@@ -243,7 +243,7 @@ int main(int argc, char* argv[]){
             while(digitalRead(PIN_BTN5) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
             if(temp < min){
-                digitalWrite(LEDAR, LOW);
+                digitalWrite(LED2, LOW);
                 delay(500);
             }    
         }
