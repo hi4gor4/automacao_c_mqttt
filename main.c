@@ -155,7 +155,8 @@ int main(int argc, char* argv[]){
     pinMode(PIN_BTN2, INPUT);
     pullUpDnControl(PIN_BTN2, PUD_UP);
     pintMode(POT, INPUT);
-
+    pinMode(PIN_BTN3, INPUT);
+    pullUpDnControl(PIN_BTN3, PUD_UP);
 
     while(1){
         if(digitalRead(PIN_BTN1) == LOW){
