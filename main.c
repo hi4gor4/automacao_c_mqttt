@@ -27,7 +27,7 @@
 #define PIN_LUZ1 26
 #define LED1 22
 #define LED2 6
-#define LED3 24
+#define LED3 25
 
 
 //Variaveis globais
@@ -161,6 +161,7 @@ int main(int argc, char* argv[]){
     pinMode(LED2, OUTPUT);
     digitalWrite(LED2, 1);
     digitalWrite(LED3, OUTPUT);
+    digitalWrite(LED3, 1);
     pinMode(PIN_BTN1, INPUT);
     pullUpDnControl(PIN_BTN1, PUD_UP);
     pinMode(PIN_BTN2, INPUT);
@@ -206,6 +207,7 @@ int main(int argc, char* argv[]){
             digitalWrite(LED1, LOW);
         }
 
+        //Controle do sistema de segurança
         if(digitalRead(PIN_BTN3) == LOW){
             if(seguranca){
                 MQTTPublish(TOPICALARM, "1");
@@ -214,7 +216,6 @@ int main(int argc, char* argv[]){
             while(digitalRead(PIN_BTN3) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
         }
-
         if(!seguranca){
             digitalWrite(LED2, LOW);
         }
@@ -226,6 +227,8 @@ int main(int argc, char* argv[]){
             while(digitalRead(PIN_BTN4) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
         }
+
+        //
         if(digitalRead(PIN_BTN5) == LOW){
             temp -=1;
             sprintf(str, "%d", temp);
