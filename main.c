@@ -158,7 +158,7 @@ int main(int argc, char* argv[]){
     pintMode(POT, INPUT);
     pinMode(PIN_BTN3, INPUT);
     pullUpDnControl(PIN_BTN3, PUD_UP);
-
+    pinMode(LED2, OUTPUT);
     while(1){
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
