@@ -33,8 +33,8 @@
 //Variaveis globais
 int luz1 = 0;
 int luz2 = 0;
-int max = 0;
-int min = 0;
+int max = 30;
+int min = 18;
 int temp = 25;
 int seguranca = 0;
 
@@ -51,7 +51,6 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
-
     return 1;
 }
 
@@ -74,6 +73,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
             seguranca = atoi(payload);
         }
     }
+
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
     return 1;
@@ -168,9 +168,6 @@ int main(int argc, char* argv[]){
     pinMode(PIN_BTN5, INPUT);
     pullUpDnControl(PIN_BTN5, PUD_UP);
    
-
-    printf("\n\n\n\n%d\n\n\n\n",getCurrentHour());
-
     while(1){
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
@@ -239,6 +236,5 @@ int main(int argc, char* argv[]){
     };
 
     MQTTDisconnect();
-
     return 0;
 }
