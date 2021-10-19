@@ -241,7 +241,7 @@ int main(int argc, char* argv[]){
         if(temp >= max){
             digitalWrite(LED3, HIGH);
         }else if(temp < min){
-            printf("aquiiiiiiiii");
+
             digitalWrite(LED3, LOW);
         }
     };
