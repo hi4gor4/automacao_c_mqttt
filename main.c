@@ -26,7 +26,7 @@ MQTTClient client;
 
 /* Subscribed MQTT topic listener function. */
 bool chartobool(char* msg){
-    if(msg[0] == "1"){
+    if(msg == "true"){
         return true;
     }else{
         return false;
