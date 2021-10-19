@@ -55,12 +55,14 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("  message: ");
         printf("%s\n", (char*)message->payload);
         char* payload = message->payload;
-        printf("\n\n\n%d\n\n\n",strcmp("hiago23rangel@gmail.com/luz1", topicName)+1);
-        if(strcmp("hiago23rangel@gmail.com/luz1", topicName)){
+        //printf("\n\n\n%d\n\n\n",strcmp("hiago23rangel@gmail.com/luz1", topicName)+1);
+        int hiaguinhogameplays = strcmp("hiago23rangel@gmail.com/luz1", topicName);
+        if(hiaguinhogameplays == 0){
             printf("entraste");
             luz1 = chartobool(payload);
     
-    }
+        }
+        printf("%d",hiaguinhogameplays);
     }
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
