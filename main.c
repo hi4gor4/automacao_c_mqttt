@@ -54,13 +54,13 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("  topic: %s\n", topicName);
         printf("  message: ");
         printf("%s\n", (char*)message->payload);
+        char* payload = message->payload;
+        printf(topicName);
+        if(strcmp("hiago23rangel@gmail.com/luz1", topicName) == 1){
+            printf("entraste");
+            luz1 = chartobool(payload);
     
     }
-    char* payload = message->payload;
-
-    if(strcmp("hiago23rangel@gmail.com/luz1", topicName) == 0){
-        printf("entraste");
-        luz1 = chartobool(payload);
     }
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
