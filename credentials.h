@@ -3,7 +3,7 @@
 
 /* Provide MQTT broker credentials as denoted in maqiatto.com. */
 #define CLIENTID        "hiagora"
-#define BROKER_ADDR     "o6cbefe0.us-east-1.emqx.cloud"
+#define BROKER_ADDR     "o6cbefe0.us-east-1.emqx.cloud:15069"
 #define USERNAME        "hiagora"
 #define PASSWORD        "2314"
 
