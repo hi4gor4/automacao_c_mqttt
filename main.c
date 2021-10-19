@@ -55,7 +55,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
                 printf("um vendedor de flores \n\n\n");
                 luz1 = 1;
             }else{
-                luz1 = 1;
+                luz1 = 0;
             }
     
         }
