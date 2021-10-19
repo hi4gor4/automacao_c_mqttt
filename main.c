@@ -15,9 +15,16 @@
 #define PIN_BTN2 17
 #define PIN_LUZ1 26
 #define LED1 22
+#define DHT 23
+
 
 #define TOPICLAMPADA1 "hiago23rangel@gmail.com/luz1"
 #define TOPICLAMPADA2 "hiago23rangel@gmail.com/luz2"
+#define TOPICMAX "hiago23rangel@gmail.com/max"
+#define TOPICMIN "hiago23rangel@gmail.com/min"
+#define TOPICTEMP "hiago23rangel@gmail.com/temp"
+#define TOPICACTIVATE "hiago23rangel@gmail.com/alarm1"
+#define TOPICALARM "hiago23rangel@gmail.com/alarm2"
 
 //Variaveis globais
 int luz1;
@@ -126,8 +133,7 @@ void MQTTBegin()
  * Periodically publishes test messages with your credentials.
  */
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]){
     MQTTBegin();
 
     MQTTSubscribe(TOPICLAMPADA1);
@@ -141,9 +147,10 @@ int main(int argc, char* argv[])
     digitalWrite(LED1, 1);
     pinMode(PIN_BTN2, INPUT);
     pullUpDnControl(PIN_BTN2, PUD_UP);
+    pintMode(POT, INPUT);
 
-    while(1) 
-    {
+
+    while(1){
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
                 MQTTPublish(TOPICLAMPADA1, "0");
@@ -163,7 +170,6 @@ int main(int argc, char* argv[])
             }
             while(digitalRead(PIN_BTN2) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
-            
         }
 
         //Verifica estados de pinos
@@ -173,16 +179,11 @@ int main(int argc, char* argv[])
         }else{
             digitalWrite(PIN_LUZ1, HIGH);
         }
-
         if (luz2){
-            digitalWrite(LED1,HIGH);
+            digitalWrite(LED1, HIGH);
         }else{
             digitalWrite(LED1, LOW);
-        }    
-    
-
-    
-    
+        }     
     };
 
     MQTTDisconnect();
