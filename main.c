@@ -172,9 +172,9 @@ int main(int argc, char* argv[]){
         }
         if(digitalRead(PIN_BTN2) == LOW){
             if(luz1){
-                MQTTPublish(TOPICLAMPADA2, "1");
-            }else{
                 MQTTPublish(TOPICLAMPADA2, "0");
+            }else{
+                MQTTPublish(TOPICLAMPADA2, "1");
             }
             while(digitalRead(PIN_BTN2) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
@@ -192,12 +192,16 @@ int main(int argc, char* argv[]){
             digitalWrite(LED1, LOW);
         }
 
-        if(digitalRead(PIN_BTN3) == LOW && seguranca == 1){
+        if(digitalRead(PIN_BTN3) == LOW){
+            if(seguranca == '1'){
             MQTTPublish(TOPICALARM, "1");
             digitalWrite(LED2, HIGH);
-        }else{
+            }else{
             MQTTPublish(TOPICALARM, "0");
             digitalWrite(LED2, LOW);
+            }
+            while(digitalRead(PIN_BTN2) == LOW); // aguarda enquato chave ainda esta pressionada           
+            delay(1000);
         }
 
     };
