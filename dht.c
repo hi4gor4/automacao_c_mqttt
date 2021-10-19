@@ -51,8 +51,7 @@ void read_dht_data()
 	 * check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
 	 * print it out if data is good
 	 */
-	if ( (j >= 40) &&
-	     (data[4] == ( (data[0] + data[1] + data[2] + data[3]) & 0xFF) ) )
+	if ( j >= 40 )
 	{
 		float h = (float)((data[0] << 8) + data[1]) / 10;
 		if ( h > 100 )
