@@ -27,7 +27,7 @@
 #define PIN_LUZ1 26
 #define LED1 22
 #define LED2 6
-#define LED3 25
+#define LED3 24
 
 
 //Variaveis globais
@@ -239,7 +239,6 @@ int main(int argc, char* argv[]){
 
         if(temp >= max){
             digitalWrite(LED3, HIGH);
-            printf("ligouuuuuuuuuuuuuuuuuuuuuuuuuuuuu\n\n\n\n\n");
         }else if(temp < min){
             digitalWrite(LED3, LOW);
         }
