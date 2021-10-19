@@ -33,7 +33,6 @@ int luz1 = 0;
 int luz2 = 0;
 int max = 0;
 int min = 0;
-int alarm = 0;
 int seguranca = 0;
 
 MQTTClient client;
@@ -196,6 +195,9 @@ int main(int argc, char* argv[]){
         if(digitalRead(PIN_BTN3) == LOW && seguranca == 1){
             MQTTPublish(TOPICALARM, "1");
             digitalWrite(LED2, HIGH);
+        }else{
+            MQTTPublish(TOPICALARM, "0");
+            digitalWrite(LED2, LOW);
         }
 
     };
