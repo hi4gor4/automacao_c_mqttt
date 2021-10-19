@@ -58,7 +58,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
             luz1 = chartobool(payload);
     
         }
-        printf("%d",,hiaguinhogameplays);
+        printf("%d",hiaguinhogameplays);
     }
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
