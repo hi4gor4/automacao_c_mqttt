@@ -173,6 +173,7 @@ int main(int argc, char* argv[]){
     pullUpDnControl(PIN_BTN5, PUD_UP);
    
     while(1){
+        printf("entrouuuuu\n\n\n\n\n\n\n")
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
                 MQTTPublish(TOPICLAMPADA1, "0");
