@@ -161,7 +161,7 @@ int main(int argc, char* argv[]){
     pinMode(LED2, OUTPUT);
     digitalWrite(LED2, 1);
     digitalWrite(LED3, OUTPUT);
-    digitalWrite(LED3, 1);
+    digitalWrite(LED3, HIGH);
     pinMode(PIN_BTN1, INPUT);
     pullUpDnControl(PIN_BTN1, PUD_UP);
     pinMode(PIN_BTN2, INPUT);
@@ -231,6 +231,7 @@ int main(int argc, char* argv[]){
         //
         if(digitalRead(PIN_BTN5) == LOW){
             temp -=1;
+            
             sprintf(str, "%d", temp);
             MQTTPublish(TOPICTEMP, str);
             while(digitalRead(PIN_BTN5) == LOW); // aguarda enquato chave ainda esta pressionada           
@@ -239,8 +240,11 @@ int main(int argc, char* argv[]){
 
         if(temp >= max){
             digitalWrite(LED3, HIGH);
+            delay(500);
         }else if(temp < min){
+
             digitalWrite(LED3, LOW);
+            delay(500);
         }
     };
 
