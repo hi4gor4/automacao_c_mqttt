@@ -26,7 +26,7 @@ MQTTClient client;
 
 /* Subscribed MQTT topic listener function. */
 bool chartobool(char* msg){
-    if(msg = "true"){
+    if(msg == "true"){
         return true;
     }else{
         return false;
@@ -56,9 +56,12 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
     
     char* payload = message->payload;
     if(topicName == TOPICLAMPADA1){
+        printf("entraste");
         luz1 = chartobool(payload);
     }
     }
+    MQTTClient_freeMessage(&message);
+    MQTTClient_free(topicName);
     return 1;
 }
 void connlost(void *context, char *cause)
