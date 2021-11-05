@@ -40,6 +40,9 @@ int seguranca = 0;
 
 MQTTClient client;
 
+FILE *log = fopen("log.txt", "a");
+
+
 /* Subscribed MQTT topic listener function. */
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message){
     if(message) {
@@ -63,14 +66,19 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         char* payload = message->payload;
         if(!strcmp(TOPICLAMPADA1, topicName)){
             luz1 =atoi(payload);
+            fprintf(stdout, "Estado da luz 1 alterado par: %d\n", luz1);
         }else if (!strcmp(TOPICLAMPADA2,topicName)){
             luz2 = atoi(payload);
+            fprintf(stdout, "Estado da luz 2 alterado para: %d\n", luz2);
         }else if(!strcmp(TOPICMIN, topicName)){
             min = atoi(payload);
+            fprintf(stdout, "Temperatura minima atualizada para: %d\n", min);
         }else if(!strcmp(TOPICMAX, topicName)){
             max = atoi(payload);
+            fprintf(stdout, "Temperatura maxima atualizada para: %d\n", max);
         }else if(!strcmp(TOPICACTIVATE, topicName)){
             seguranca = atoi(payload);
+            fprintf(stdout, "Estado de segurança alterado para: %d\n", seguranca);
         }
     }
 
@@ -172,6 +180,11 @@ int main(int argc, char* argv[]){
     pullUpDnControl(PIN_BTN4, PUD_UP);
     pinMode(PIN_BTN5, INPUT);
     pullUpDnControl(PIN_BTN5, PUD_UP);
+
+    if(log == NULL){
+        printf("Não foi possivel criar log");
+        return 0;
+    }
    
     while(1){
         if(digitalRead(PIN_BTN1) == LOW){
@@ -212,6 +225,7 @@ int main(int argc, char* argv[]){
             if(seguranca){
                 MQTTPublish(TOPICALARM, "1");
                 digitalWrite(LED2, HIGH);
+                fprintf(stdout, "Intruso detectado \n");
             }
             while(digitalRead(PIN_BTN3) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
