@@ -40,6 +40,12 @@ int seguranca = 0;
 
 MQTTClient client;
 
+FILE *arquivo;
+
+time_t rawtime;
+struct tm *ptm;
+int initday;
+int initmon;
 
 /* Subscribed MQTT topic listener function. */
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message){
@@ -172,7 +178,7 @@ void tempo(){
     }else if(initday - ptm->tm_mday > 0){
         //Verifica se é um outro mês
             if(initmon - ptm->tm_mon < 0){
-                fclose(arquivo)
+                fclose(arquivo);
             if(remove("old.txt") == 0){
                 printf("Deletou log antigo");
             }
@@ -185,7 +191,7 @@ void tempo(){
         }else{
             //Verifica se é um novo ano
             if(initmon - ptm->tm_mon > 0){
-                fclose(arquivo)
+                fclose(arquivo);
             if(remove("old.txt") == 0){
                 printf("Deletou log antigo");
             }
@@ -239,10 +245,10 @@ int main(int argc, char* argv[]){
     pullUpDnControl(PIN_BTN5, PUD_UP);
 
     //Inicia o horario
-    time_t rawtime = time(NULL);
-    struct tm *ptm = localtime(&rawtime);
-    int initday = ptm->tm_day;
-    int initmon = ptm->tm_mon;
+    rawtime = time(NULL);
+    ptm = localtime(&rawtime);
+    initday = ptm->tm_day;
+    initmon = ptm->tm_mon;
 
     arquivo = fopen("log.txt", "a");
     if(arquivo == NULL){
