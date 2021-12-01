@@ -174,7 +174,7 @@ void tempo(){
             arquivo = fopen("log.txt", "a");
             printf("Log novo inciado");
         }
-        initday = ptm->tm_day;
+        initday = ptm->tm_mday;
     }else if(initday - ptm->tm_mday > 0){
         //Verifica se é um outro mês
             if(initmon - ptm->tm_mon < 0){
@@ -187,7 +187,7 @@ void tempo(){
                 printf("Log novo inciado");
             }
             initmon = ptm->tm_mon;
-            initday = ptm.tm_day;
+            initday = ptm->tm_mday;
         }else{
             //Verifica se é um novo ano
             if(initmon - ptm->tm_mon > 0){
@@ -209,7 +209,7 @@ void tempo(){
 /* This program connects to https://www.maqiatto.com/
  * Periodically publishes test messages with your credentials.
  */
-
+}
 int main(int argc, char* argv[]){
     //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
     MQTTBegin();
@@ -247,7 +247,7 @@ int main(int argc, char* argv[]){
     //Inicia o horario
     rawtime = time(NULL);
     ptm = localtime(&rawtime);
-    initday = ptm->tm_day;
+    initday = ptm->tm_mday;
     initmon = ptm->tm_mon;
 
     arquivo = fopen("log.txt", "a");
