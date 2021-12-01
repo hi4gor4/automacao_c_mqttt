@@ -29,11 +29,6 @@
 #define LED2 6
 #define LEDAR 24
 
-//Inicia o horario
-time_t rawtime = time(NULL);
-struct tm *ptm = localtime(&rawtime);;
-int initday = ptm.tm_day;
-int initmon = ptm.tm_mon;
 
 //Variaveis globais
 int luz1 = 0;
@@ -45,8 +40,6 @@ int seguranca = 0;
 
 MQTTClient client;
 
-//Abre o log pela primeira vez
-FILE *log = fopen("log.txt", "a");
 
 /* Subscribed MQTT topic listener function. */
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message){
@@ -71,27 +64,27 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         char* payload = message->payload;
         if(!strcmp(TOPICLAMPADA1, topicName)){
             luz1 =atoi(payload);
-            if(log != NULL){
+            if(arquivo != NULL){
                 fprintf(stdout, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
             }
         }else if (!strcmp(TOPICLAMPADA2,topicName)){
             luz2 = atoi(payload);
-            if(log != NULL){
+            if(arquivo != NULL){
                 fprintf(stdout, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
             }
         }else if(!strcmp(TOPICMIN, topicName)){
             min = atoi(payload);
-            if(log != NULL){
+            if(arquivo != NULL){
                 fprintf(stdout, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
             }
         }else if(!strcmp(TOPICMAX, topicName)){
             max = atoi(payload);
-            if(log!= NULL){
+            if(arquivo!= NULL){
                 fprintf(stdout, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
             }
         }else if(!strcmp(TOPICACTIVATE, topicName)){
             seguranca = atoi(payload);
-            if(log != NULL){
+            if(arquivo != NULL){
                  fprintf(stdout, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
             }
         }
@@ -158,6 +151,55 @@ void MQTTBegin(){
     }
 }
 
+void tempo(){
+    rawtime = time(NULL);
+    ptm = localtime(&rawtime);
+
+    if(ptm = NULL){
+        printf("Não foi possivel pegar o localtime");
+    } 
+
+    if(initday - ptm->tm_mday < 0){
+        fclose(arquivo);
+        if(remove("old.txt") == 0){
+            printf("Deletou log antigo");
+        }
+        if(rename("log.txt", "old.txt") == 0){
+            arquivo = fopen("log.txt", "a");
+            printf("Log novo inciado");
+        }
+        initday = ptm->tm_day;
+    }else if(initday - ptm->tm_mday > 0){
+        //Verifica se é um outro mês
+            if(initmon - ptm->tm_mon < 0){
+                fclose(arquivo)
+            if(remove("old.txt") == 0){
+                printf("Deletou log antigo");
+            }
+            if(rename("log.txt", "old.txt") == 0){
+                arquivo = fopen("log.txt", "a");
+                printf("Log novo inciado");
+            }
+            initmon = ptm->tm_mon;
+            initday = ptm.tm_day;
+        }else{
+            //Verifica se é um novo ano
+            if(initmon - ptm->tm_mon > 0){
+                fclose(arquivo)
+            if(remove("old.txt") == 0){
+                printf("Deletou log antigo");
+            }
+            if(rename("log.txt", "old.txt") == 0){
+                arquivo = fopen("log.txt", "a");
+                printf("Log novo inciado");
+            }
+            initmon = ptm->tm_mon;
+            initday = ptm->tm_day;
+        }
+    }
+
+}
+
 /* This program connects to https://www.maqiatto.com/
  * Periodically publishes test messages with your credentials.
  */
@@ -196,14 +238,20 @@ int main(int argc, char* argv[]){
     pinMode(PIN_BTN5, INPUT);
     pullUpDnControl(PIN_BTN5, PUD_UP);
 
-    log = fopen("log.txt", "a");
-    if(log == NULL){
+    //Inicia o horario
+    time_t rawtime = time(NULL);
+    struct tm *ptm = localtime(&rawtime);
+    int initday = ptm->tm_day;
+    int initmon = ptm->tm_mon;
+
+    arquivo = fopen("log.txt", "a");
+    if(arquivo == NULL){
         printf("Não foi possivel criar log");
     }
    
     while(1){
 
-        getTime();
+        tempo();
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
                 MQTTPublish(TOPICLAMPADA1, "0");
@@ -242,7 +290,7 @@ int main(int argc, char* argv[]){
             if(seguranca){
                 MQTTPublish(TOPICALARM, "1");
                 digitalWrite(LED2, HIGH);
-                if(log != NULL){
+                if(arquivo != NULL){
                     fprintf(stdout, "Intruso detectado \n");
                 }    
             }
@@ -286,51 +334,3 @@ int main(int argc, char* argv[]){
     return 0;
 }
 
-void getTime(){
-    rawtime = time(NULL);
-    *ptm = localtime(&rawtime);
-
-    if(ptm = NULL){
-        printf("Não foi possivel pegar o localtime");
-    } 
-
-    if(initday - ptm.tm_mday < 0){
-        fclose(log)
-        if(remove("old.txt") == 0){
-            printf("Deletou log antigo");
-        }
-        if(rename("log.txt", "old.txt") == 0){
-            log = fopen("log.txt", "a");
-            printf("Log novo inciado");
-        }
-        initday = ptm.tm_day;
-    }else if(initday - ptm.tm_mday > 0){
-        //Verifica se é um outro mês
-            if(initmon - ptm.tm_mon < 0){
-                fclose(log)
-            if(remove("old.txt") == 0){
-                printf("Deletou log antigo");
-            }
-            if(rename("log.txt", "old.txt") == 0){
-                log = fopen("log.txt", "a");
-                printf("Log novo inciado");
-            }
-            initmon = ptm.tm_mon;
-            initday = ptm.tm_day;
-        }else{
-            //Verifica se é um novo ano
-            if(initmon - ptm.tm_mon > 0){
-                fclose(log)
-            if(remove("old.txt") == 0){
-                printf("Deletou log antigo");
-            }
-            if(rename("log.txt", "old.txt") == 0){
-                log = fopen("log.txt", "a");
-                printf("Log novo inciado");
-            }
-            initmon = ptm.tm_mon;
-            initday = ptm.tm_day;
-        }
-    }
-
-}
