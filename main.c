@@ -200,7 +200,7 @@ void tempo(){
                 printf("Log novo inciado");
             }
             initmon = ptm->tm_mon;
-            initday = ptm->tm_day;
+            initday = ptm->tm_mday;
         }
     }
 
