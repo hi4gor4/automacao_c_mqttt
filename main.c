@@ -175,7 +175,7 @@ void tempo()
     day = ptm->tm_mday;
     mon = ptm->tm_mon;
 
-    if (ptm = NULL)
+    if (ptm == NULL)
     {
         printf("Não foi possivel pegar o localtime");
     }
@@ -343,9 +343,9 @@ int main(int argc, char *argv[])
             {
                 MQTTPublish(TOPICALARM, "1");
                 digitalWrite(LED2, HIGH);
-                // if(arquivo != NULL){
-                //     fprintf(arquivo, "Intruso detectado \n");
-                // }
+                if(arquivo != NULL){
+                    fprintf(arquivo, "Intruso detectado \n");
+                }
             }
             while (digitalRead(PIN_BTN3) == LOW)
                 ; // aguarda enquato chave ainda esta pressionada
