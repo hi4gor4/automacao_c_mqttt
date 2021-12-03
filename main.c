@@ -292,7 +292,6 @@ int main(int argc, char *argv[])
         {
             fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
             atual_luz1 = luz1;
-            printf("%d", atual_luz1);
         }
         if (luz2 != atual_luz2)
         {
@@ -303,7 +302,6 @@ int main(int argc, char *argv[])
         {
             fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
             atual_max = max;
-            atual_min = min;
         }
         if (min != atual_min)
         {
@@ -346,6 +344,8 @@ int main(int argc, char *argv[])
             while (digitalRead(PIN_BTN2) == LOW)
                 ; // aguarda enquato chave ainda esta pressionada
             delay(1000);
+
+        fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);            
         }
 
         //Verifica estados de pinos
@@ -382,6 +382,8 @@ int main(int argc, char *argv[])
             while (digitalRead(PIN_BTN3) == LOW)
                 ; // aguarda enquato chave ainda esta pressionada
             delay(1000);
+
+            fprintf(arquivo, "%d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
         }
         if (!seguranca)
         {
@@ -418,6 +420,7 @@ int main(int argc, char *argv[])
             {
                 digitalWrite(LEDAR, LOW);
             }
+            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
         }
     };
     fclose(arquivo);
