@@ -51,6 +51,30 @@ struct tm *ptm;
 int initday;
 int initmon;
 
+
+void log(){
+    if (luz1 != atual_luz1)
+        {
+            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+        }
+        if (luz2 != atual_luz2)
+        {
+            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
+        }
+        if (max != atual_max)
+        {
+            fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
+        }
+        if (min != atual_min)
+        {
+            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
+        }
+        if (seguranca != seguranca)
+        {
+            fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
+        }
+
+}
 /* Subscribed MQTT topic listener function. */
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
@@ -76,28 +100,6 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("  message: ");
         printf("%s\n", (char *)message->payload);
         char *payload = message->payload;
-
-        if (luz1 != atual_luz1)
-        {
-            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
-        }
-        if (luz2 != atual_luz2)
-        {
-            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
-        }
-        if (max != atual_max)
-        {
-            fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
-        }
-        if (min != atual_min)
-        {
-            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
-        }
-        if (seguranca != seguranca)
-        {
-            fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
-        }
-
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             atual_luz1 = luz1;
@@ -123,6 +125,8 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
             autal_seguraca = seguranca;
             seguranca = atoi(payload);
         }
+
+        log();
     }
 
     MQTTClient_freeMessage(&message);
