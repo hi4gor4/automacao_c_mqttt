@@ -19,7 +19,7 @@
 
 #define TOUT_TO_PUBLISH 5000
 
-#define PIN_BTN1 27 
+#define PIN_BTN1 27
 #define PIN_BTN2 17
 #define PIN_BTN3 16
 #define PIN_BTN4 5
@@ -28,7 +28,6 @@
 #define LED1 22
 #define LED2 6
 #define LEDAR 24
-
 
 //Variaveis globais
 int luz1 = 0;
@@ -48,12 +47,14 @@ int initday;
 int initmon;
 
 /* Subscribed MQTT topic listener function. */
-int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message){
-    if(message) {
+int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
+{
+    if (message)
+    {
         printf("Message arrived\n");
         printf("  topic: %s\n", topicName);
         printf("  message: ");
-        printf("%s\n", (char*)message->payload);
+        printf("%s\n", (char *)message->payload);
     }
 
     MQTTClient_freeMessage(&message);
@@ -61,38 +62,54 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     return 1;
 }
 
-int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_message *message){
-    if(message){
+int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_message *message)
+{
+    if (message)
+    {
         printf("Message arrived\n");
         printf("  topic: %s\n", topicName);
         printf("  message: ");
-        printf("%s\n", (char*)message->payload);
-        char* payload = message->payload;
-        if(!strcmp(TOPICLAMPADA1, topicName)){
-            luz1 =atoi(payload);
-            // if(arquivo != NULL){
-            //     fprintf(stdout, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
-            // }
-        }else if (!strcmp(TOPICLAMPADA2,topicName)){
+        printf("%s\n", (char *)message->payload);
+        char *payload = message->payload;
+        if (!strcmp(TOPICLAMPADA1, topicName))
+        {
+            luz1 = atoi(payload);
+            if (arquivo != NULL)
+            {
+                fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+            }
+        }
+        else if (!strcmp(TOPICLAMPADA2, topicName))
+        {
             luz2 = atoi(payload);
-            // if(arquivo != NULL){
-            //     fprintf(stdout, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
-            // }
-        }else if(!strcmp(TOPICMIN, topicName)){
+            if (arquivo != NULL)
+            {
+                fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
+            }
+        }
+        else if (!strcmp(TOPICMIN, topicName))
+        {
             min = atoi(payload);
-            // if(arquivo != NULL){
-            //     fprintf(stdout, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
-            // }
-        }else if(!strcmp(TOPICMAX, topicName)){
+            if (arquivo != NULL)
+            {
+                fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
+            }
+        }
+        else if (!strcmp(TOPICMAX, topicName))
+        {
             max = atoi(payload);
-            // if(arquivo!= NULL){
-            //     fprintf(stdout, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
-            // }
-        }else if(!strcmp(TOPICACTIVATE, topicName)){
+            if (arquivo != NULL)
+            {
+                fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
+            }
+        }
+        else if (!strcmp(TOPICACTIVATE, topicName))
+        {
             seguranca = atoi(payload);
-            // if(arquivo != NULL){
-            //      fprintf(stdout, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
-            // }
+            if (arquivo != NULL)
+            {
+                fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
+            }
         }
     }
 
@@ -100,7 +117,8 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
     MQTTClient_free(topicName);
     return 1;
 }
-void connlost(void *context, char *cause){
+void connlost(void *context, char *cause)
+{
     printf("Connection lost\n");
     if (cause)
         printf("Reason is : %s\n", cause);
@@ -109,14 +127,15 @@ void connlost(void *context, char *cause){
     MQTTBegin();
 }
 
-void MQTTSubscribe(const char* topic)
+void MQTTSubscribe(const char *topic)
 {
-    printf("Subscribing to topic %s for client %s using QoS%d\n\n", 
-        topic, CLIENTID, QOS);
+    printf("Subscribing to topic %s for client %s using QoS%d\n\n",
+           topic, CLIENTID, QOS);
     MQTTClient_subscribe(client, topic, QOS);
 }
 
-void MQTTPublish(const char* topic, char* message){
+void MQTTPublish(const char *topic, char *message)
+{
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
     MQTTClient_deliveryToken token;
     pubmsg.payload = message;
@@ -131,12 +150,14 @@ void MQTTPublish(const char* topic, char* message){
     /*printf("Message with delivery token %d delivered\n", token);*/
 }
 
-void MQTTDisconnect(){
+void MQTTDisconnect()
+{
     MQTTClient_disconnect(client, TIMEOUT);
     MQTTClient_destroy(&client);
 }
 
-void MQTTBegin(){
+void MQTTBegin()
+{
     int rc = -1;
     printf("Initializing MQTT...\n");
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
@@ -145,7 +166,7 @@ void MQTTBegin(){
     conn_opts.username = USERNAME;
     conn_opts.password = PASSWORD;
     MQTTClient_create(&client, BROKER_ADDR, CLIENTID,
-        MQTTCLIENT_PERSISTENCE_NONE, NULL);
+                      MQTTCLIENT_PERSISTENCE_NONE, NULL);
 
     /* Set connection, subscribe and publish callbacks. */
     MQTTClient_setCallbacks(client, NULL, connlost, verify_topics, NULL);
@@ -153,190 +174,231 @@ void MQTTBegin(){
     while ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
     {
         printf("Failed to connect, return code %d\n", rc);
-        sleep(TIMEOUT / 1000); 
+        sleep(TIMEOUT / 1000);
     }
 }
 
-// void tempo(){
-//     rawtime = time(NULL);
-//     ptm = localtime(&rawtime);
-
-//     if(ptm = NULL){
-//         printf("Não foi possivel pegar o localtime");
-//     } 
-
-//     if(initday - ptm->tm_mday < 0){
-//         fclose(arquivo);
-//         if(remove("old.txt") == 0){
-//             printf("Deletou log antigo");
-//         }
-//         if(rename("log.txt", "old.txt") == 0){
-//             arquivo = fopen("log.txt", "a");
-//             printf("Log novo inciado");
-//         }
-//         initday = ptm->tm_mday;
-//     }else if(initday - ptm->tm_mday > 0){
-//         //Verifica se é um outro mês
-//             if(initmon - ptm->tm_mon < 0){
-//                 fclose(arquivo);
-//             if(remove("old.txt") == 0){
-//                 printf("Deletou log antigo");
-//             }
-//             if(rename("log.txt", "old.txt") == 0){
-//                 arquivo = fopen("log.txt", "a");
-//                 printf("Log novo inciado");
-//             }
-//             initmon = ptm->tm_mon;
-//             initday = ptm->tm_mday;
-//         }else{
-//             //Verifica se é um novo ano
-//             if(initmon - ptm->tm_mon > 0){
-//                 fclose(arquivo);
-//             if(remove("old.txt") == 0){
-//                 printf("Deletou log antigo");
-//             }
-//             if(rename("log.txt", "old.txt") == 0){
-//                 arquivo = fopen("log.txt", "a");
-//                 printf("Log novo inciado");
-//             }
-//             initmon = ptm->tm_mon;
-//             initday = ptm->tm_mday;
-//         }
-//     }
-
-// }
-
-/* This program connects to https://www.maqiatto.com/
- * Periodically publishes test messages with your credentials.
- */
-//}
-int main(int argc, char* argv[]){
-    //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
-    MQTTBegin();
-    MQTTSubscribe(TOPICLAMPADA1);
-    MQTTSubscribe(TOPICLAMPADA2);
-    MQTTSubscribe(TOPICMAX);
-    MQTTSubscribe(TOPICMIN);
-    MQTTSubscribe(TOPICTEMP);
-    MQTTSubscribe(TOPICALARM);
-    MQTTSubscribe(TOPICACTIVATE);
-    
-    char str[10];
-    
-    //Configurando os pinos da raspberry
-    wiringPiSetupGpio();
-    pinMode(PIN_LUZ1, OUTPUT);
-    digitalWrite(PIN_LUZ1, 1);
-    pinMode(LED1, OUTPUT);
-    digitalWrite(LED1, 1);
-    pinMode(LED2, OUTPUT);
-    digitalWrite(LED2, 1);
-    digitalWrite(LEDAR, OUTPUT);
-    digitalWrite(LEDAR, HIGH);
-    pinMode(PIN_BTN1, INPUT);
-    pullUpDnControl(PIN_BTN1, PUD_UP);
-    pinMode(PIN_BTN2, INPUT);
-    pullUpDnControl(PIN_BTN2, PUD_UP);
-    pinMode(PIN_BTN3, INPUT);
-    pullUpDnControl(PIN_BTN3, PUD_UP);
-    pinMode(PIN_BTN4, INPUT);
-    pullUpDnControl(PIN_BTN4, PUD_UP);
-    pinMode(PIN_BTN5, INPUT);
-    pullUpDnControl(PIN_BTN5, PUD_UP);
-
-    //Inicia o horario
+void tempo()
+{
+    int day, mon;
     rawtime = time(NULL);
     ptm = localtime(&rawtime);
-    initday = ptm->tm_mday;
-    initmon = ptm->tm_mon;
+    day = ptm->tm_mday;
+    mon = ptm->tm_mon;
 
-    arquivo = fopen("log.txt", "a");
-    if(arquivo == NULL){
-        printf("Não foi possivel criar log");
+    if (ptm = NULL)
+    {
+        printf("Não foi possivel pegar o localtime");
     }
-   
-    while(1){
 
-        //tempo();
-        if(digitalRead(PIN_BTN1) == LOW){
-            if(luz1){
-                MQTTPublish(TOPICLAMPADA1, "0");
-            }else{
-                MQTTPublish(TOPICLAMPADA1, "1");
-            
+    if (initday - day < 0)
+    {
+        fclose(arquivo);
+        if (remove("old.txt") == 0)
+        {
+            printf("Deletou log antigo");
+        }
+        if (rename("log.txt", "old.txt") == 0)
+        {
+            arquivo = fopen("log.txt", "a");
+            printf("Log novo inciado");
+        }
+        initday = ptm->tm_mday;
+    }
+    else if (initday - day > 0)
+    {
+        //Verifica se é um outro mês
+        if (initmon - mon < 0)
+        {
+            fclose(arquivo);
+            if (remove("old.txt") == 0)
+            {
+                printf("Deletou log antigo");
             }
-            while(digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada           
-            delay(1000);
-            
-        }
-        if(digitalRead(PIN_BTN2) == LOW){
-            if(luz2){
-                MQTTPublish(TOPICLAMPADA2, "0");
-            }else{
-                MQTTPublish(TOPICLAMPADA2, "1");
+            if (rename("log.txt", "old.txt") == 0)
+            {
+                arquivo = fopen("log.txt", "a");
+                printf("Log novo inciado");
             }
-            while(digitalRead(PIN_BTN2) == LOW); // aguarda enquato chave ainda esta pressionada           
-            delay(1000);
+            initmon = ptm->tm_mon;
+            initday = ptm->tm_mday;
         }
-
-        //Verifica estados de pinos
-        if(luz1){
-            digitalWrite(PIN_LUZ1, LOW);
-        }else{
-            digitalWrite(PIN_LUZ1, HIGH);
-        }
-        if (luz2){
-            digitalWrite(LED1, HIGH);
-        }else{
-            digitalWrite(LED1, LOW);
-        }
-
-        //Controle do sistema de segurança
-        if(digitalRead(PIN_BTN3) == LOW){
-            if(seguranca){
-                MQTTPublish(TOPICALARM, "1");
-                digitalWrite(LED2, HIGH);
-                // if(arquivo != NULL){
-                //     fprintf(stdout, "Intruso detectado \n");
-                // }    
-            }
-            while(digitalRead(PIN_BTN3) == LOW); // aguarda enquato chave ainda esta pressionada           
-            delay(1000);
-        }
-        if(!seguranca){
-            digitalWrite(LED2, LOW);
-        }
-
-        if(digitalRead(PIN_BTN4) == LOW){
-            temp += 1;
-            int templ = temp;
-            sprintf(str, "%d", templ);
-            MQTTPublish(TOPICTEMP, str);
-            while(digitalRead(PIN_BTN4) == LOW); // aguarda enquato chave ainda esta pressionada           
-            delay(1000);
-            if(temp >= max){
-                digitalWrite(LEDAR, HIGH);
+        else
+        {
+            //Verifica se é um novo ano
+            if (mon - initmon > 0)
+            {
+                fclose(arquivo);
+                if (remove("old.txt") == 0)
+                {
+                    printf("Deletou log antigo");
+                }
+                if (rename("log.txt", "old.txt") == 0)
+                {
+                    arquivo = fopen("log.txt", "a");
+                    printf("Log novo inciado");
+                }
+                initmon = ptm->tm_mon;
+                initday = ptm->tm_mday;
             }
         }
-    };
-        
 
-        //
-        if(digitalRead(PIN_BTN5) == LOW){
-            temp -=1;
-            int templ = temp;
-            sprintf(str, "%d", templ);            
-            MQTTPublish(TOPICTEMP, str);
-            while(digitalRead(PIN_BTN5) == LOW); // aguarda enquato chave ainda esta pressionada           
-            delay(1000);
-            if(temp < min){
-                digitalWrite(LEDAR, LOW);
-            }    
+        // }
+
+        /* This program connects to https://www.maqiatto.com/
+ * Periodically publishes test messages with your credentials.
+ */
+        //}
+        int main(int argc, char *argv[])
+        {
+            //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
+            MQTTBegin();
+            MQTTSubscribe(TOPICLAMPADA1);
+            MQTTSubscribe(TOPICLAMPADA2);
+            MQTTSubscribe(TOPICMAX);
+            MQTTSubscribe(TOPICMIN);
+            MQTTSubscribe(TOPICTEMP);
+            MQTTSubscribe(TOPICALARM);
+            MQTTSubscribe(TOPICACTIVATE);
+
+            char str[10];
+
+            //Configurando os pinos da raspberry
+            wiringPiSetupGpio();
+            pinMode(PIN_LUZ1, OUTPUT);
+            digitalWrite(PIN_LUZ1, 1);
+            pinMode(LED1, OUTPUT);
+            digitalWrite(LED1, 1);
+            pinMode(LED2, OUTPUT);
+            digitalWrite(LED2, 1);
+            digitalWrite(LEDAR, OUTPUT);
+            digitalWrite(LEDAR, HIGH);
+            pinMode(PIN_BTN1, INPUT);
+            pullUpDnControl(PIN_BTN1, PUD_UP);
+            pinMode(PIN_BTN2, INPUT);
+            pullUpDnControl(PIN_BTN2, PUD_UP);
+            pinMode(PIN_BTN3, INPUT);
+            pullUpDnControl(PIN_BTN3, PUD_UP);
+            pinMode(PIN_BTN4, INPUT);
+            pullUpDnControl(PIN_BTN4, PUD_UP);
+            pinMode(PIN_BTN5, INPUT);
+            pullUpDnControl(PIN_BTN5, PUD_UP);
+
+            //Inicia o horario
+            rawtime = time(NULL);
+            ptm = localtime(&rawtime);
+            initday = ptm->tm_mday;
+            initmon = ptm->tm_mon;
+
+            arquivo = fopen("log.txt", "a");
+            if (arquivo == NULL)
+            {
+                printf("Não foi possivel criar log");
+            }
+
+            while (1)
+            {
+
+                //tempo();
+                if (digitalRead(PIN_BTN1) == LOW)
+                {
+                    if (luz1)
+                    {
+                        MQTTPublish(TOPICLAMPADA1, "0");
+                    }
+                    else
+                    {
+                        MQTTPublish(TOPICLAMPADA1, "1");
+                    }
+                    while (digitalRead(PIN_BTN1) == LOW)
+                        ; // aguarda enquato chave ainda esta pressionada
+                    delay(1000);
+                }
+                if (digitalRead(PIN_BTN2) == LOW)
+                {
+                    if (luz2)
+                    {
+                        MQTTPublish(TOPICLAMPADA2, "0");
+                    }
+                    else
+                    {
+                        MQTTPublish(TOPICLAMPADA2, "1");
+                    }
+                    while (digitalRead(PIN_BTN2) == LOW)
+                        ; // aguarda enquato chave ainda esta pressionada
+                    delay(1000);
+                }
+
+                //Verifica estados de pinos
+                if (luz1)
+                {
+                    digitalWrite(PIN_LUZ1, LOW);
+                }
+                else
+                {
+                    digitalWrite(PIN_LUZ1, HIGH);
+                }
+                if (luz2)
+                {
+                    digitalWrite(LED1, HIGH);
+                }
+                else
+                {
+                    digitalWrite(LED1, LOW);
+                }
+
+                //Controle do sistema de segurança
+                if (digitalRead(PIN_BTN3) == LOW)
+                {
+                    if (seguranca)
+                    {
+                        MQTTPublish(TOPICALARM, "1");
+                        digitalWrite(LED2, HIGH);
+                        if (arquivo != NULL)
+                        {
+                            fprintf(arquivo, "Intruso detectado \n");
+                        }
+                    }
+                    while (digitalRead(PIN_BTN3) == LOW)
+                        ; // aguarda enquato chave ainda esta pressionada
+                    delay(1000);
+                }
+                if (!seguranca)
+                {
+                    digitalWrite(LED2, LOW);
+                }
+
+                if (digitalRead(PIN_BTN4) == LOW)
+                {
+                    temp += 1;
+                    int templ = temp;
+                    sprintf(str, "%d", templ);
+                    MQTTPublish(TOPICTEMP, str);
+                    while (digitalRead(PIN_BTN4) == LOW)
+                        ; // aguarda enquato chave ainda esta pressionada
+                    delay(1000);
+                    if (temp >= max)
+                    {
+                        digitalWrite(LEDAR, HIGH);
+                    }
+                }
+
+                if (digitalRead(PIN_BTN5) == LOW)
+            {
+                temp -= 1;
+                int templ = temp;
+                sprintf(str, "%d", templ);
+                MQTTPublish(TOPICTEMP, str);
+                while (digitalRead(PIN_BTN5) == LOW)
+                    ; // aguarda enquato chave ainda esta pressionada
+                delay(1000);
+                if (temp < min)
+                {
+                    digitalWrite(LEDAR, LOW);
+                }
+            }
+            };
+            MQTTDisconnect();
+            fclose(arquivo);
+            return 0;
         }
-
-      
-
-    MQTTDisconnect();
-    return 0;
-}
-
