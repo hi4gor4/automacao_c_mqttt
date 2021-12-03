@@ -325,12 +325,12 @@ int main(int argc, char *argv[])
             {
                 MQTTPublish(TOPICLAMPADA1, "1");
             }
-            while (digitalRead(PIN_BTN1) == LOW)
-                ; // aguarda enquato chave ainda esta pressionada
-            delay(1000);
 
             printf("Apertou botão");
             fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+            while (digitalRead(PIN_BTN1) == LOW); // aguarda enquato chave ainda esta pressionada
+            delay(1000);
+           
         }
         if (digitalRead(PIN_BTN2) == LOW)
         {
