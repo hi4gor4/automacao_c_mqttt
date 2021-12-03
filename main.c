@@ -39,7 +39,7 @@ int seguranca = 0;
 
 MQTTClient client;
 
-FILE *arquivo = fopen();
+FILE *arquivo;
 
 time_t rawtime;
 struct tm *ptm;
@@ -290,7 +290,7 @@ int main(int argc, char *argv[])
     while (1)
     {
 
-        tempo();
+        //tempo();
         if (digitalRead(PIN_BTN1) == LOW)
         {
             if (luz1)
