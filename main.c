@@ -51,37 +51,7 @@ struct tm *ptm;
 int initday;
 int initmon;
 
-void Escrevelog(){
-    if (luz1 != atual_luz1)
-    {
-        fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
-    }
-    if (luz2 != atual_luz2)
-    {
-        fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
-    }
-    if (max != atual_max)
-    {
-        fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
-    }
-    if (min != atual_min)
-    {
-        fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
-    }
-    if (seguranca != seguranca)
-    {
-        fprintf(arquivo, "%d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
-    }
 
-    printf("%d", luz1);
-
-    atual_luz1 = luz1;
-    atual_luz2 = luz2;
-    atual_min = min;
-    atual_max = max;
-    autal_seguraca = seguranca;
-
-}
 /* Subscribed MQTT topic listener function. */
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
@@ -111,7 +81,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             luz1 = atoi(payload);
-                 printf("%d", luz1);
+                 printf("%d", min);
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
@@ -120,8 +90,6 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         else if (!strcmp(TOPICMIN, topicName))
         {
             min = atoi(payload);
-       
-
         }
         else if (!strcmp(TOPICMAX, topicName))
         {
@@ -321,7 +289,36 @@ int main(int argc, char *argv[])
     {
 
         tempo();
-        Escrevelog();
+
+         if (luz1 != atual_luz1)
+    {
+        fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+        atual_luz1 = luz1;
+    }
+    if (luz2 != atual_luz2)
+    {
+        fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
+        atual_luz2 = luz2;
+    }
+    if (max != atual_max)
+    {
+        fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
+        atual_max = max;
+        atual_min = min;
+    }
+    if (min != atual_min)
+    {
+        fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
+        atual_min = min;
+    }
+    }
+    if (seguranca != seguranca)
+    {
+        fprintf(arquivo, "%d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
+        autal_seguraca = seguranca;
+    }
+
+
         if (digitalRead(PIN_BTN1) == LOW)
         {
             if (luz1)
@@ -335,6 +332,8 @@ int main(int argc, char *argv[])
             while (digitalRead(PIN_BTN1) == LOW)
                 ; // aguarda enquato chave ainda esta pressionada
             delay(1000);
+
+            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         }
         if (digitalRead(PIN_BTN2) == LOW)
         {
@@ -349,6 +348,8 @@ int main(int argc, char *argv[])
             while (digitalRead(PIN_BTN2) == LOW)
                 ; // aguarda enquato chave ainda esta pressionada
             delay(1000);
+
+            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
         }
 
         //Verifica estados de pinos
@@ -403,6 +404,8 @@ int main(int argc, char *argv[])
             {
                 digitalWrite(LEDAR, HIGH);
             }
+
+            fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
         }
 
         if (digitalRead(PIN_BTN5) == LOW)
