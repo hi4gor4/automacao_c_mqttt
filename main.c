@@ -74,28 +74,22 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             luz1 = atoi(payload);
-            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
             luz2 = atoi(payload);
-            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
         }
         else if (!strcmp(TOPICMIN, topicName))
         {
             min = atoi(payload);
-            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
         }
         else if (!strcmp(TOPICMAX, topicName))
         {
             max = atoi(payload);
-
-          fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
         }
         else if (!strcmp(TOPICACTIVATE, topicName))
         {
             seguranca = atoi(payload);
-           fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
         }
     }
 
@@ -237,7 +231,7 @@ void tempo()
 
 int main(int argc, char *argv[])
 {   
-    int atual_luz1;
+    int atual_luz1, atual_luz2, atual_max, atual_min, autal_seguraca;
    
     arquivo = fopen("log.txt", "a");
     //Inicia o horario
@@ -287,6 +281,10 @@ int main(int argc, char *argv[])
     while (1)
     {
         atual_luz1 = luz1;
+        atual_luz2 = luz2;
+        atual_max = max;
+        atual_min = min;
+        autal_seguraca = seguranca;
 
         tempo();
         if (digitalRead(PIN_BTN1) == LOW)
@@ -388,6 +386,18 @@ int main(int argc, char *argv[])
 
         if(luz1 - atual_luz1 != 0){
             fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+        }
+        if(luz2 - atual_luz2 != 0){
+            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
+        }
+        if(max - atual_max != 0){
+          fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
+        }
+        if(min - atual_min != 0){
+            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
+        }
+        if(seguranca -seguranca != 0){
+           fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
         }
     };
     fclose(arquivo);
