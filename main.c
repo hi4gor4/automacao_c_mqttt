@@ -236,7 +236,8 @@ void tempo()
 }
 
 int main(int argc, char *argv[])
-{
+{   
+    int atual_luz1;
    
     arquivo = fopen("log.txt", "a");
     //Inicia o horario
@@ -285,9 +286,9 @@ int main(int argc, char *argv[])
 
     while (1)
     {
+        atual_luz1 = luz1;
 
         tempo();
-        fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         if (digitalRead(PIN_BTN1) == LOW)
         {
             if (luz1)
@@ -383,6 +384,10 @@ int main(int argc, char *argv[])
             {
                 digitalWrite(LEDAR, LOW);
             }
+        }
+
+        if(luz1 - atual_luz1 != 0){
+            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         }
     };
     fclose(arquivo);
