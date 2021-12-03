@@ -77,7 +77,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("%s\n", (char *)message->payload);
         char *payload = message->payload;
 
-       /* if (luz1 != atual_luz1)
+        if (luz1 != atual_luz1)
         {
             fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         }
@@ -96,16 +96,12 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if (seguranca != seguranca)
         {
             fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
-        }*/
+        }
 
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             atual_luz1 = luz1;
             luz1 = atoi(payload);
-
-            if(luz1 != atual_luz1){
-                fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
-            }
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
