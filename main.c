@@ -70,29 +70,29 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         char* payload = message->payload;
         if(!strcmp(TOPICLAMPADA1, topicName)){
             luz1 =atoi(payload);
-            if(arquivo != NULL){
-                fprintf(stdout, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
-            }
+            // if(arquivo != NULL){
+            //     fprintf(stdout, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+            // }
         }else if (!strcmp(TOPICLAMPADA2,topicName)){
             luz2 = atoi(payload);
-            if(arquivo != NULL){
-                fprintf(stdout, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
-            }
+            // if(arquivo != NULL){
+            //     fprintf(stdout, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
+            // }
         }else if(!strcmp(TOPICMIN, topicName)){
             min = atoi(payload);
-            if(arquivo != NULL){
-                fprintf(stdout, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
-            }
+            // if(arquivo != NULL){
+            //     fprintf(stdout, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
+            // }
         }else if(!strcmp(TOPICMAX, topicName)){
             max = atoi(payload);
-            if(arquivo!= NULL){
-                fprintf(stdout, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
-            }
+            // if(arquivo!= NULL){
+            //     fprintf(stdout, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
+            // }
         }else if(!strcmp(TOPICACTIVATE, topicName)){
             seguranca = atoi(payload);
-            if(arquivo != NULL){
-                 fprintf(stdout, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
-            }
+            // if(arquivo != NULL){
+            //      fprintf(stdout, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
+            // }
         }
     }
 
@@ -296,9 +296,9 @@ int main(int argc, char* argv[]){
             if(seguranca){
                 MQTTPublish(TOPICALARM, "1");
                 digitalWrite(LED2, HIGH);
-                if(arquivo != NULL){
-                    fprintf(stdout, "Intruso detectado \n");
-                }    
+                // if(arquivo != NULL){
+                //     fprintf(stdout, "Intruso detectado \n");
+                // }    
             }
             while(digitalRead(PIN_BTN3) == LOW); // aguarda enquato chave ainda esta pressionada           
             delay(1000);
