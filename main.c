@@ -95,7 +95,6 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         else if (!strcmp(TOPICACTIVATE, topicName))
         {
             seguranca = atoi(payload);
-
            fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
         }
     }
@@ -279,9 +278,6 @@ int main(int argc, char *argv[])
     pinMode(PIN_BTN5, INPUT);
     pullUpDnControl(PIN_BTN5, PUD_UP);
 
-
-
-
     if (arquivo == NULL)
     {
         printf("Não foi possivel criar log");
@@ -291,6 +287,7 @@ int main(int argc, char *argv[])
     {
 
         tempo();
+        fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         if (digitalRead(PIN_BTN1) == LOW)
         {
             if (luz1)
@@ -388,6 +385,7 @@ int main(int argc, char *argv[])
             }
         }
     };
+    fclose(arquivo);
     MQTTDisconnect();
     return 0;
 }
