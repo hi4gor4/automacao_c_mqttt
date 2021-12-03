@@ -112,27 +112,23 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             luz1 = atoi(payload);
-            Escrevelog();
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
             luz2 = atoi(payload);
-            Escrevelog();
         }
         else if (!strcmp(TOPICMIN, topicName))
         {
             min = atoi(payload);
-            Escrevelog();
+
         }
         else if (!strcmp(TOPICMAX, topicName))
         {
             max = atoi(payload);
-            Escrevelog();
         }
         else if (!strcmp(TOPICACTIVATE, topicName))
         {
             seguranca = atoi(payload);
-            Escrevelog();
         }
     }
 
@@ -322,7 +318,9 @@ int main(int argc, char *argv[])
 
     while (1)
     {
+
         tempo();
+        Escrevelog();
         if (digitalRead(PIN_BTN1) == LOW)
         {
             if (luz1)
