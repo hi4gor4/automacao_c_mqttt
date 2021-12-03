@@ -73,7 +73,6 @@ void Escrevelog(){
         fprintf(arquivo, "%d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
     }
 
-    printf("%d", atual_luz1);
     printf("%d", luz1);
 
     atual_luz1 = luz1;
@@ -112,6 +111,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             luz1 = atoi(payload);
+                 printf("%d", luz1);
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
@@ -120,6 +120,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         else if (!strcmp(TOPICMIN, topicName))
         {
             min = atoi(payload);
+       
 
         }
         else if (!strcmp(TOPICMAX, topicName))
