@@ -286,27 +286,6 @@ int main(int argc, char *argv[])
     while (1)
     {
         tempo();
-        if (luz1 != atual_luz1)
-        {
-            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
-        }
-        if (luz2 != atual_luz2)
-        {
-            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
-        }
-        if (max != atual_max)
-        {
-            fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
-        }
-        if (min != atual_min)
-        {
-            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
-        }
-        if (seguranca != seguranca)
-        {
-            fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
-        }
-
         if (digitalRead(PIN_BTN1) == LOW)
         {
             if (luz1)
@@ -403,6 +382,27 @@ int main(int argc, char *argv[])
             {
                 digitalWrite(LEDAR, LOW);
             }
+        }
+        
+        if (luz1 == atual_luz1)
+        {
+            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+        }
+        if (luz2 == atual_luz2)
+        {
+            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
+        }
+        if (max == atual_max)
+        {
+            fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
+        }
+        if (min == atual_min)
+        {
+            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
+        }
+        if (seguranca == seguranca)
+        {
+            fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
         }
     };
     fclose(arquivo);
