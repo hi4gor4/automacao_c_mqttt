@@ -186,7 +186,7 @@ void tempo()
     day = ptm->tm_mday;
     mon = ptm->tm_mon;
 
-    if (ptm = NULL)
+    if (ptm == NULL)
     {
         printf("Não foi possivel pegar o localtime");
     }
