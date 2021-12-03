@@ -51,7 +51,7 @@ struct tm *ptm;
 int initday;
 int initmon;
 
-int log(){
+void Escrevelog(){
     if (luz1 != atual_luz1)
     {
         fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
@@ -75,7 +75,7 @@ int log(){
 
     printf("%d", atual_luz1);
     printf("%d", luz1);
-    
+
     atual_luz1 = luz1;
     atual_luz2 = luz2;
     atual_min = min;
