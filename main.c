@@ -36,11 +36,7 @@ int max = 28;
 int min = 10;
 int temp = 25;
 int seguranca = 0;
-int atual_luz1 = 0; 
-int atual_luz2 = 0;
-int atual_max = 28;
-int atual_min = 10;
-int autal_seguraca = 0;
+int atual_luz1, atual_luz2, atual_max, atual_min, autal_seguraca;
 
 MQTTClient client;
 
@@ -75,28 +71,31 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("  topic: %s\n", topicName);
         printf("  message: ");
         printf("%s\n", (char *)message->payload);
-
         fprintf(arquivo, "%d %d %d Estado da %s alterado par: %s\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, topicName, message->payload);
-
         char *payload = message->payload;
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
+            atual_luz1 = luz1;
             luz1 = atoi(payload);
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
+            atual_luz2 = luz2;
             luz2 = atoi(payload);
         }
         else if (!strcmp(TOPICMIN, topicName))
         {
+            atual_min = min;
             min = atoi(payload);
         }
         else if (!strcmp(TOPICMAX, topicName))
         {
+            atual_max = max;
             max = atoi(payload);
         }
         else if (!strcmp(TOPICACTIVATE, topicName))
         {
+            autal_seguraca = seguranca;
             seguranca = atoi(payload);
         }
     }
@@ -238,8 +237,8 @@ void tempo()
 }
 
 int main(int argc, char *argv[])
-{   
-   
+{
+
     arquivo = fopen("log.txt", "a");
     //Inicia o horario
     rawtime = time(NULL);
@@ -247,7 +246,7 @@ int main(int argc, char *argv[])
     initday = ptm->tm_mday;
     initmon = ptm->tm_mon;
 
-     //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
+    //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
     MQTTBegin();
     MQTTSubscribe(TOPICLAMPADA1);
     MQTTSubscribe(TOPICLAMPADA2);
@@ -286,28 +285,28 @@ int main(int argc, char *argv[])
     }
 
     while (1)
-    {   
-        if(luz1 != atual_luz1){
+    {
+        tempo();
+        if (luz1 != atual_luz1)
+        {
             fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         }
-        if(luz2 != atual_luz2){
+        if (luz2 != atual_luz2)
+        {
             fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
         }
-        if(max != atual_max){
-          fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
+        if (max != atual_max)
+        {
+            fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
         }
-        if(min != atual_min){
+        if (min != atual_min)
+        {
             fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
         }
-        if(seguranca != seguranca){
-           fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
+        if (seguranca != seguranca)
+        {
+            fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
         }
-        atual_luz1 = luz1;
-        atual_luz2 = luz2;
-        atual_max = max;
-        atual_min = min;
-        autal_seguraca = seguranca;
-        tempo();
 
         if (digitalRead(PIN_BTN1) == LOW)
         {
@@ -363,7 +362,8 @@ int main(int argc, char *argv[])
             {
                 MQTTPublish(TOPICALARM, "1");
                 digitalWrite(LED2, HIGH);
-                if(arquivo != NULL){
+                if (arquivo != NULL)
+                {
                     fprintf(arquivo, "Intruso detectado \n");
                 }
             }
@@ -405,7 +405,6 @@ int main(int argc, char *argv[])
                 digitalWrite(LEDAR, LOW);
             }
         }
-
     };
     fclose(arquivo);
     MQTTDisconnect();
