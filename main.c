@@ -74,42 +74,31 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             luz1 = atoi(payload);
-            if (arquivo != NULL)
-            {
-                fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
-            }
+
+            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
             luz2 = atoi(payload);
-            if (arquivo != NULL)
-            {
-                fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
-            }
+            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
         }
         else if (!strcmp(TOPICMIN, topicName))
         {
             min = atoi(payload);
-            if (arquivo != NULL)
-            {
-                fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
-            }
+
+            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
         }
         else if (!strcmp(TOPICMAX, topicName))
         {
             max = atoi(payload);
-            if (arquivo != NULL)
-            {
-                fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
-            }
+
+            fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
         }
         else if (!strcmp(TOPICACTIVATE, topicName))
         {
             seguranca = atoi(payload);
-            if (arquivo != NULL)
-            {
-                fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
-            }
+
+            fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
         }
     }
 
@@ -186,7 +175,7 @@ void tempo()
     day = ptm->tm_mday;
     mon = ptm->tm_mon;
 
-    if (ptm == NULL)
+    if (ptm = NULL)
     {
         printf("Não foi possivel pegar o localtime");
     }
@@ -226,7 +215,7 @@ void tempo()
         else
         {
             //Verifica se é um novo ano
-            if (mon - initmon > 0)
+            if (initmon - ptm->tm_mon > 0)
             {
                 fclose(arquivo);
                 if (remove("old.txt") == 0)
@@ -243,12 +232,12 @@ void tempo()
             }
         }
     }
-}
 
-/* This program connects to https://www.maqiatto.com/
+    /* This program connects to https://www.maqiatto.com/
  * Periodically publishes test messages with your credentials.
  */
-//}
+}
+
 int main(int argc, char *argv[])
 {
     //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
@@ -299,7 +288,7 @@ int main(int argc, char *argv[])
     while (1)
     {
 
-        //tempo();
+        tempo();
         if (digitalRead(PIN_BTN1) == LOW)
         {
             if (luz1)
@@ -354,10 +343,9 @@ int main(int argc, char *argv[])
             {
                 MQTTPublish(TOPICALARM, "1");
                 digitalWrite(LED2, HIGH);
-                if (arquivo != NULL)
-                {
-                    fprintf(arquivo, "Intruso detectado \n");
-                }
+                // if(arquivo != NULL){
+                //     fprintf(arquivo, "Intruso detectado \n");
+                // }
             }
             while (digitalRead(PIN_BTN3) == LOW)
                 ; // aguarda enquato chave ainda esta pressionada
@@ -398,7 +386,9 @@ int main(int argc, char *argv[])
             }
         }
     };
+
+    //
+
     MQTTDisconnect();
-    fclose(arquivo);
     return 0;
 }
