@@ -74,8 +74,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             luz1 = atoi(payload);
-
-            //fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
