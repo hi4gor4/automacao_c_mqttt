@@ -290,7 +290,7 @@ int main(int argc, char *argv[])
     while (1)
     {
 
-        //tempo();
+        tempo();
         if (digitalRead(PIN_BTN1) == LOW)
         {
             if (luz1)
