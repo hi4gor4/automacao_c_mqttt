@@ -242,163 +242,163 @@ void tempo()
                 initday = ptm->tm_mday;
             }
         }
+    }
+}
 
-        // }
-
-        /* This program connects to https://www.maqiatto.com/
+/* This program connects to https://www.maqiatto.com/
  * Periodically publishes test messages with your credentials.
  */
-        //}
-        int main(int argc, char *argv[])
+//}
+int main(int argc, char *argv[])
+{
+    //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
+    MQTTBegin();
+    MQTTSubscribe(TOPICLAMPADA1);
+    MQTTSubscribe(TOPICLAMPADA2);
+    MQTTSubscribe(TOPICMAX);
+    MQTTSubscribe(TOPICMIN);
+    MQTTSubscribe(TOPICTEMP);
+    MQTTSubscribe(TOPICALARM);
+    MQTTSubscribe(TOPICACTIVATE);
+
+    char str[10];
+
+    //Configurando os pinos da raspberry
+    wiringPiSetupGpio();
+    pinMode(PIN_LUZ1, OUTPUT);
+    digitalWrite(PIN_LUZ1, 1);
+    pinMode(LED1, OUTPUT);
+    digitalWrite(LED1, 1);
+    pinMode(LED2, OUTPUT);
+    digitalWrite(LED2, 1);
+    digitalWrite(LEDAR, OUTPUT);
+    digitalWrite(LEDAR, HIGH);
+    pinMode(PIN_BTN1, INPUT);
+    pullUpDnControl(PIN_BTN1, PUD_UP);
+    pinMode(PIN_BTN2, INPUT);
+    pullUpDnControl(PIN_BTN2, PUD_UP);
+    pinMode(PIN_BTN3, INPUT);
+    pullUpDnControl(PIN_BTN3, PUD_UP);
+    pinMode(PIN_BTN4, INPUT);
+    pullUpDnControl(PIN_BTN4, PUD_UP);
+    pinMode(PIN_BTN5, INPUT);
+    pullUpDnControl(PIN_BTN5, PUD_UP);
+
+    //Inicia o horario
+    rawtime = time(NULL);
+    ptm = localtime(&rawtime);
+    initday = ptm->tm_mday;
+    initmon = ptm->tm_mon;
+
+    arquivo = fopen("log.txt", "a");
+    if (arquivo == NULL)
+    {
+        printf("Não foi possivel criar log");
+    }
+
+    while (1)
+    {
+
+        //tempo();
+        if (digitalRead(PIN_BTN1) == LOW)
         {
-            //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
-            MQTTBegin();
-            MQTTSubscribe(TOPICLAMPADA1);
-            MQTTSubscribe(TOPICLAMPADA2);
-            MQTTSubscribe(TOPICMAX);
-            MQTTSubscribe(TOPICMIN);
-            MQTTSubscribe(TOPICTEMP);
-            MQTTSubscribe(TOPICALARM);
-            MQTTSubscribe(TOPICACTIVATE);
-
-            char str[10];
-
-            //Configurando os pinos da raspberry
-            wiringPiSetupGpio();
-            pinMode(PIN_LUZ1, OUTPUT);
-            digitalWrite(PIN_LUZ1, 1);
-            pinMode(LED1, OUTPUT);
-            digitalWrite(LED1, 1);
-            pinMode(LED2, OUTPUT);
-            digitalWrite(LED2, 1);
-            digitalWrite(LEDAR, OUTPUT);
-            digitalWrite(LEDAR, HIGH);
-            pinMode(PIN_BTN1, INPUT);
-            pullUpDnControl(PIN_BTN1, PUD_UP);
-            pinMode(PIN_BTN2, INPUT);
-            pullUpDnControl(PIN_BTN2, PUD_UP);
-            pinMode(PIN_BTN3, INPUT);
-            pullUpDnControl(PIN_BTN3, PUD_UP);
-            pinMode(PIN_BTN4, INPUT);
-            pullUpDnControl(PIN_BTN4, PUD_UP);
-            pinMode(PIN_BTN5, INPUT);
-            pullUpDnControl(PIN_BTN5, PUD_UP);
-
-            //Inicia o horario
-            rawtime = time(NULL);
-            ptm = localtime(&rawtime);
-            initday = ptm->tm_mday;
-            initmon = ptm->tm_mon;
-
-            arquivo = fopen("log.txt", "a");
-            if (arquivo == NULL)
+            if (luz1)
             {
-                printf("Não foi possivel criar log");
+                MQTTPublish(TOPICLAMPADA1, "0");
             }
-
-            while (1)
+            else
             {
-
-                //tempo();
-                if (digitalRead(PIN_BTN1) == LOW)
-                {
-                    if (luz1)
-                    {
-                        MQTTPublish(TOPICLAMPADA1, "0");
-                    }
-                    else
-                    {
-                        MQTTPublish(TOPICLAMPADA1, "1");
-                    }
-                    while (digitalRead(PIN_BTN1) == LOW)
-                        ; // aguarda enquato chave ainda esta pressionada
-                    delay(1000);
-                }
-                if (digitalRead(PIN_BTN2) == LOW)
-                {
-                    if (luz2)
-                    {
-                        MQTTPublish(TOPICLAMPADA2, "0");
-                    }
-                    else
-                    {
-                        MQTTPublish(TOPICLAMPADA2, "1");
-                    }
-                    while (digitalRead(PIN_BTN2) == LOW)
-                        ; // aguarda enquato chave ainda esta pressionada
-                    delay(1000);
-                }
-
-                //Verifica estados de pinos
-                if (luz1)
-                {
-                    digitalWrite(PIN_LUZ1, LOW);
-                }
-                else
-                {
-                    digitalWrite(PIN_LUZ1, HIGH);
-                }
-                if (luz2)
-                {
-                    digitalWrite(LED1, HIGH);
-                }
-                else
-                {
-                    digitalWrite(LED1, LOW);
-                }
-
-                //Controle do sistema de segurança
-                if (digitalRead(PIN_BTN3) == LOW)
-                {
-                    if (seguranca)
-                    {
-                        MQTTPublish(TOPICALARM, "1");
-                        digitalWrite(LED2, HIGH);
-                        if (arquivo != NULL)
-                        {
-                            fprintf(arquivo, "Intruso detectado \n");
-                        }
-                    }
-                    while (digitalRead(PIN_BTN3) == LOW)
-                        ; // aguarda enquato chave ainda esta pressionada
-                    delay(1000);
-                }
-                if (!seguranca)
-                {
-                    digitalWrite(LED2, LOW);
-                }
-
-                if (digitalRead(PIN_BTN4) == LOW)
-                {
-                    temp += 1;
-                    int templ = temp;
-                    sprintf(str, "%d", templ);
-                    MQTTPublish(TOPICTEMP, str);
-                    while (digitalRead(PIN_BTN4) == LOW)
-                        ; // aguarda enquato chave ainda esta pressionada
-                    delay(1000);
-                    if (temp >= max)
-                    {
-                        digitalWrite(LEDAR, HIGH);
-                    }
-                }
-
-                if (digitalRead(PIN_BTN5) == LOW)
-            {
-                temp -= 1;
-                int templ = temp;
-                sprintf(str, "%d", templ);
-                MQTTPublish(TOPICTEMP, str);
-                while (digitalRead(PIN_BTN5) == LOW)
-                    ; // aguarda enquato chave ainda esta pressionada
-                delay(1000);
-                if (temp < min)
-                {
-                    digitalWrite(LEDAR, LOW);
-                }
+                MQTTPublish(TOPICLAMPADA1, "1");
             }
-            };
-            MQTTDisconnect();
-            fclose(arquivo);
-            return 0;
+            while (digitalRead(PIN_BTN1) == LOW)
+                ; // aguarda enquato chave ainda esta pressionada
+            delay(1000);
         }
+        if (digitalRead(PIN_BTN2) == LOW)
+        {
+            if (luz2)
+            {
+                MQTTPublish(TOPICLAMPADA2, "0");
+            }
+            else
+            {
+                MQTTPublish(TOPICLAMPADA2, "1");
+            }
+            while (digitalRead(PIN_BTN2) == LOW)
+                ; // aguarda enquato chave ainda esta pressionada
+            delay(1000);
+        }
+
+        //Verifica estados de pinos
+        if (luz1)
+        {
+            digitalWrite(PIN_LUZ1, LOW);
+        }
+        else
+        {
+            digitalWrite(PIN_LUZ1, HIGH);
+        }
+        if (luz2)
+        {
+            digitalWrite(LED1, HIGH);
+        }
+        else
+        {
+            digitalWrite(LED1, LOW);
+        }
+
+        //Controle do sistema de segurança
+        if (digitalRead(PIN_BTN3) == LOW)
+        {
+            if (seguranca)
+            {
+                MQTTPublish(TOPICALARM, "1");
+                digitalWrite(LED2, HIGH);
+                if (arquivo != NULL)
+                {
+                    fprintf(arquivo, "Intruso detectado \n");
+                }
+            }
+            while (digitalRead(PIN_BTN3) == LOW)
+                ; // aguarda enquato chave ainda esta pressionada
+            delay(1000);
+        }
+        if (!seguranca)
+        {
+            digitalWrite(LED2, LOW);
+        }
+
+        if (digitalRead(PIN_BTN4) == LOW)
+        {
+            temp += 1;
+            int templ = temp;
+            sprintf(str, "%d", templ);
+            MQTTPublish(TOPICTEMP, str);
+            while (digitalRead(PIN_BTN4) == LOW)
+                ; // aguarda enquato chave ainda esta pressionada
+            delay(1000);
+            if (temp >= max)
+            {
+                digitalWrite(LEDAR, HIGH);
+            }
+        }
+
+        if (digitalRead(PIN_BTN5) == LOW)
+        {
+            temp -= 1;
+            int templ = temp;
+            sprintf(str, "%d", templ);
+            MQTTPublish(TOPICTEMP, str);
+            while (digitalRead(PIN_BTN5) == LOW)
+                ; // aguarda enquato chave ainda esta pressionada
+            delay(1000);
+            if (temp < min)
+            {
+                digitalWrite(LEDAR, LOW);
+            }
+        }
+    };
+    MQTTDisconnect();
+    fclose(arquivo);
+    return 0;
+}
