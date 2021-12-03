@@ -71,7 +71,6 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("  topic: %s\n", topicName);
         printf("  message: ");
         printf("%s\n", (char *)message->payload);
-        fprintf(arquivo, "%d %d %d Estado da %s alterado par: %s\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, topicName, message->payload);
         char *payload = message->payload;
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
