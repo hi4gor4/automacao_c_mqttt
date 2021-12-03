@@ -51,8 +51,7 @@ struct tm *ptm;
 int initday;
 int initmon;
 
-void log()
-{
+int log(){
     if (luz1 != atual_luz1)
     {
         fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
@@ -74,6 +73,9 @@ void log()
         fprintf(arquivo, "%d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
     }
 
+    printf("%d", atual_luz1);
+    printf("%d", luz1);
+    
     atual_luz1 = luz1;
     atual_luz2 = luz2;
     atual_min = min;
