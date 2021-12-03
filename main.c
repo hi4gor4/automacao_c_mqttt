@@ -51,7 +51,6 @@ struct tm *ptm;
 int initday;
 int initmon;
 
-
 /* Subscribed MQTT topic listener function. */
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
@@ -81,7 +80,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             luz1 = atoi(payload);
-                 printf("%d", min);
+            printf("%d", min);
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
@@ -289,35 +288,34 @@ int main(int argc, char *argv[])
     {
 
         tempo();
+        if (luz1 != atual_luz1)
+        {
+            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+            atual_luz1 = luz1;
+            printf("%d", atual_luz1);
+        }
+        if (luz2 != atual_luz2)
+        {
+            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
+            atual_luz2 = luz2;
+        }
+        if (max != atual_max)
+        {
+            fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
+            atual_max = max;
+            atual_min = min;
+        }
+        if (min != atual_min)
+        {
+            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
+            atual_min = min;
+        }
 
-         if (luz1 != atual_luz1)
-    {
-        fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
-        atual_luz1 = luz1;
-    }
-    if (luz2 != atual_luz2)
-    {
-        fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
-        atual_luz2 = luz2;
-    }
-    if (max != atual_max)
-    {
-        fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
-        atual_max = max;
-        atual_min = min;
-    }
-    if (min != atual_min)
-    {
-        fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
-        atual_min = min;
-    }
-    }
-    if (seguranca != seguranca)
-    {
-        fprintf(arquivo, "%d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
-        autal_seguraca = seguranca;
-    }
-
+        if (seguranca != seguranca)
+        {
+            fprintf(arquivo, "%d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
+            autal_seguraca = seguranca;
+        }
 
         if (digitalRead(PIN_BTN1) == LOW)
         {
@@ -348,13 +346,12 @@ int main(int argc, char *argv[])
             while (digitalRead(PIN_BTN2) == LOW)
                 ; // aguarda enquato chave ainda esta pressionada
             delay(1000);
-
-            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
         }
 
         //Verifica estados de pinos
         if (luz1)
         {
+
             digitalWrite(PIN_LUZ1, LOW);
         }
         else
