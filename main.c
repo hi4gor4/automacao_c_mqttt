@@ -39,7 +39,7 @@ int seguranca = 0;
 
 MQTTClient client;
 
-FILE *arquivo;
+FILE *arquivo = fopen();
 
 time_t rawtime;
 struct tm *ptm;
@@ -74,7 +74,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             luz1 = atoi(payload);
-            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+            //fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
@@ -84,8 +84,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         else if (!strcmp(TOPICMIN, topicName))
         {
             min = atoi(payload);
-
-            //fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
+            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
         }
         else if (!strcmp(TOPICMAX, topicName))
         {
@@ -239,7 +238,15 @@ void tempo()
 
 int main(int argc, char *argv[])
 {
-    //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
+   
+    arquivo = fopen("log.txt", "a");
+    //Inicia o horario
+    rawtime = time(NULL);
+    ptm = localtime(&rawtime);
+    initday = ptm->tm_mday;
+    initmon = ptm->tm_mon;
+
+     //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
     MQTTBegin();
     MQTTSubscribe(TOPICLAMPADA1);
     MQTTSubscribe(TOPICLAMPADA2);
@@ -272,13 +279,9 @@ int main(int argc, char *argv[])
     pinMode(PIN_BTN5, INPUT);
     pullUpDnControl(PIN_BTN5, PUD_UP);
 
-    //Inicia o horario
-    rawtime = time(NULL);
-    ptm = localtime(&rawtime);
-    initday = ptm->tm_mday;
-    initmon = ptm->tm_mon;
 
-    arquivo = fopen("log.txt", "a");
+
+
     if (arquivo == NULL)
     {
         printf("Não foi possivel criar log");
