@@ -21,7 +21,6 @@ const options = {
 options.clientId = "webassis"
 options.username = "hiago23rangel@gmail.com"
 options.password = "2314"
-var message = ""
 var status = ""
 var topicMsg = ""
 const topic = [
@@ -29,7 +28,9 @@ const topic = [
     "hiago23rangel@gmail.com/alarm2",    
     "hiago23rangel@gmail.com/luz1 ",  
     "hiago23rangel@gmail.com/luz2",    
-    "hiago23rangel@gmail.com/pbl2"
+    "hiago23rangel@gmail.com/pbl2",
+    "hiago23rangel@gmail.com/max",
+    "hiago23rangel@gmail.com/min"
 ]
 
 const client = mqtt.connect('mqtt://maqiatto.com', options)
@@ -63,6 +64,7 @@ class MqttController {
     async publishTopic({ request, response }) {
         try {
             var data = request.only(['topic', 'message'])
+
             client.publish(data.topic, data.message, { qos: 0, retain: false }, (error) => {
                 if (error) {
                     return response.status(500).send({ status: 500, error: error })
@@ -78,7 +80,8 @@ class MqttController {
     async subscribeTopic({ request, response }) {
         try {
             var data = request.only(['topic'])
-            return response.status(200).send({ status: status, message: lastMessage[data.topic] })
+            console.log(data)
+            return response.status(200).send({ status: status, message: lastMessage[data.topic]  })
         } catch (e) {
             return response.status(500).send({ status: 500, error: `Erro: ${e.message}` })
         }
