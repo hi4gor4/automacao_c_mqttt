@@ -36,7 +36,11 @@ int max = 28;
 int min = 10;
 int temp = 25;
 int seguranca = 0;
-int atual_luz1, atual_luz2, atual_max, atual_min, autal_seguraca;
+int atual_luz1 = luz1; 
+int atual_luz2 = luz2;
+int atual_max = max;
+int atual_min = min;
+int autal_seguraca = seguranca;
 
 MQTTClient client;
 
@@ -71,7 +75,7 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         printf("  topic: %s\n", topicName);
         printf("  message: ");
         printf("%s\n", (char *)message->payload);
-        
+
         fprintf(arquivo, "%d %d %d Estado da %s alterado par: %s\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, topicName, message->payload);
 
         char *payload = message->payload;
@@ -282,7 +286,22 @@ int main(int argc, char *argv[])
     }
 
     while (1)
-    {
+    {   
+        if(luz1 != atual_luz1){
+            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
+        }
+        if(luz2 != atual_luz2){
+            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
+        }
+        if(max != atual_max){
+          fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
+        }
+        if(min != atual_min){
+            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
+        }
+        if(seguranca != seguranca){
+           fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
+        }
         atual_luz1 = luz1;
         atual_luz2 = luz2;
         atual_max = max;
@@ -387,21 +406,6 @@ int main(int argc, char *argv[])
             }
         }
 
-        if(luz1 != atual_luz1){
-            fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
-        }
-        if(luz2 != atual_luz2){
-            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
-        }
-        if(max != atual_max){
-          fprintf(arquivo, "%d %d %d Temperatura maxima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, max);
-        }
-        if(min != atual_min){
-            fprintf(arquivo, "%d %d %d Temperatura minima atualizada para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, min);
-        }
-        if(seguranca != seguranca){
-           fprintf(arquivo, " %d %d %d Estado de segurança alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, seguranca);
-        }
     };
     fclose(arquivo);
     MQTTDisconnect();
