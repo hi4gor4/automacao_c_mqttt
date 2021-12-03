@@ -187,7 +187,7 @@ void tempo()
         }
         if (rename("Escrevelog.txt", "old.txt") == 0)
         {
-            arquivo = fopen("Escrevelog.txt", "a");
+            arquivo = fopen("log.txt", "a");
             printf("Escrevelog novo inciado");
         }
         initday = ptm->tm_mday;
@@ -204,7 +204,7 @@ void tempo()
             }
             if (rename("Escrevelog.txt", "old.txt") == 0)
             {
-                arquivo = fopen("Escrevelog.txt", "a");
+                arquivo = fopen("log.txt", "a");
                 printf("Escrevelog novo inciado");
             }
             initmon = ptm->tm_mon;
@@ -222,7 +222,7 @@ void tempo()
                 }
                 if (rename("Escrevelog.txt", "old.txt") == 0)
                 {
-                    arquivo = fopen("Escrevelog.txt", "a");
+                    arquivo = fopen("log.txt", "a");
                     printf("Escrevelog novo inciado");
                 }
                 initmon = ptm->tm_mon;
@@ -239,7 +239,7 @@ void tempo()
 int main(int argc, char *argv[])
 {
 
-    arquivo = fopen("Escrevelog.txt", "a");
+    arquivo = fopen("log.txt", "a");
     //Inicia o horario
     rawtime = time(NULL);
     ptm = localtime(&rawtime);
@@ -329,6 +329,7 @@ int main(int argc, char *argv[])
                 ; // aguarda enquato chave ainda esta pressionada
             delay(1000);
 
+            prtinf("Apertou botão");
             fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         }
         if (digitalRead(PIN_BTN2) == LOW)
@@ -345,7 +346,7 @@ int main(int argc, char *argv[])
                 ; // aguarda enquato chave ainda esta pressionada
             delay(1000);
 
-        fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);            
+            fprintf(arquivo, "%d %d %d Estado da luz 2 alterado para: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz2);
         }
 
         //Verifica estados de pinos
