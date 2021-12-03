@@ -36,11 +36,11 @@ int max = 28;
 int min = 10;
 int temp = 25;
 int seguranca = 0;
-int atual_luz1 = luz1; 
-int atual_luz2 = luz2;
-int atual_max = max;
-int atual_min = min;
-int autal_seguraca = seguranca;
+int atual_luz1 = 0; 
+int atual_luz2 = 0;
+int atual_max = 28;
+int atual_min = 10;
+int autal_seguraca = 0;
 
 MQTTClient client;
 
