@@ -209,7 +209,7 @@ void MQTTBegin(){
 /* This program connects to https://www.maqiatto.com/
  * Periodically publishes test messages with your credentials.
  */
-}
+//}
 int main(int argc, char* argv[]){
     //Inicialização do MQTT e fazendo subriscribe nos topicos necessarios
     MQTTBegin();
@@ -257,7 +257,7 @@ int main(int argc, char* argv[]){
    
     while(1){
 
-        tempo();
+        //tempo();
         if(digitalRead(PIN_BTN1) == LOW){
             if(luz1){
                 MQTTPublish(TOPICLAMPADA1, "0");
