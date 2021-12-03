@@ -157,54 +157,54 @@ void MQTTBegin(){
     }
 }
 
-void tempo(){
-    rawtime = time(NULL);
-    ptm = localtime(&rawtime);
+// void tempo(){
+//     rawtime = time(NULL);
+//     ptm = localtime(&rawtime);
 
-    if(ptm = NULL){
-        printf("Não foi possivel pegar o localtime");
-    } 
+//     if(ptm = NULL){
+//         printf("Não foi possivel pegar o localtime");
+//     } 
 
-    if(initday - ptm->tm_mday < 0){
-        fclose(arquivo);
-        if(remove("old.txt") == 0){
-            printf("Deletou log antigo");
-        }
-        if(rename("log.txt", "old.txt") == 0){
-            arquivo = fopen("log.txt", "a");
-            printf("Log novo inciado");
-        }
-        initday = ptm->tm_mday;
-    }else if(initday - ptm->tm_mday > 0){
-        //Verifica se é um outro mês
-            if(initmon - ptm->tm_mon < 0){
-                fclose(arquivo);
-            if(remove("old.txt") == 0){
-                printf("Deletou log antigo");
-            }
-            if(rename("log.txt", "old.txt") == 0){
-                arquivo = fopen("log.txt", "a");
-                printf("Log novo inciado");
-            }
-            initmon = ptm->tm_mon;
-            initday = ptm->tm_mday;
-        }else{
-            //Verifica se é um novo ano
-            if(initmon - ptm->tm_mon > 0){
-                fclose(arquivo);
-            if(remove("old.txt") == 0){
-                printf("Deletou log antigo");
-            }
-            if(rename("log.txt", "old.txt") == 0){
-                arquivo = fopen("log.txt", "a");
-                printf("Log novo inciado");
-            }
-            initmon = ptm->tm_mon;
-            initday = ptm->tm_mday;
-        }
-    }
+//     if(initday - ptm->tm_mday < 0){
+//         fclose(arquivo);
+//         if(remove("old.txt") == 0){
+//             printf("Deletou log antigo");
+//         }
+//         if(rename("log.txt", "old.txt") == 0){
+//             arquivo = fopen("log.txt", "a");
+//             printf("Log novo inciado");
+//         }
+//         initday = ptm->tm_mday;
+//     }else if(initday - ptm->tm_mday > 0){
+//         //Verifica se é um outro mês
+//             if(initmon - ptm->tm_mon < 0){
+//                 fclose(arquivo);
+//             if(remove("old.txt") == 0){
+//                 printf("Deletou log antigo");
+//             }
+//             if(rename("log.txt", "old.txt") == 0){
+//                 arquivo = fopen("log.txt", "a");
+//                 printf("Log novo inciado");
+//             }
+//             initmon = ptm->tm_mon;
+//             initday = ptm->tm_mday;
+//         }else{
+//             //Verifica se é um novo ano
+//             if(initmon - ptm->tm_mon > 0){
+//                 fclose(arquivo);
+//             if(remove("old.txt") == 0){
+//                 printf("Deletou log antigo");
+//             }
+//             if(rename("log.txt", "old.txt") == 0){
+//                 arquivo = fopen("log.txt", "a");
+//                 printf("Log novo inciado");
+//             }
+//             initmon = ptm->tm_mon;
+//             initday = ptm->tm_mday;
+//         }
+//     }
 
-}
+// }
 
 /* This program connects to https://www.maqiatto.com/
  * Periodically publishes test messages with your credentials.
