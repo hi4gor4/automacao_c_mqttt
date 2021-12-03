@@ -112,27 +112,27 @@ int verify_topics(void *context, char *topicName, int topicLen, MQTTClient_messa
         if (!strcmp(TOPICLAMPADA1, topicName))
         {
             luz1 = atoi(payload);
-            log();
+            Escrevelog();
         }
         else if (!strcmp(TOPICLAMPADA2, topicName))
         {
             luz2 = atoi(payload);
-            log();
+            Escrevelog();
         }
         else if (!strcmp(TOPICMIN, topicName))
         {
             min = atoi(payload);
-            log();
+            Escrevelog();
         }
         else if (!strcmp(TOPICMAX, topicName))
         {
             max = atoi(payload);
-            log();
+            Escrevelog();
         }
         else if (!strcmp(TOPICACTIVATE, topicName))
         {
             seguranca = atoi(payload);
-            log();
+            Escrevelog();
         }
     }
 
@@ -219,12 +219,12 @@ void tempo()
         fclose(arquivo);
         if (remove("old.txt") == 0)
         {
-            printf("Deletou log antigo");
+            printf("Deletou Escrevelog antigo");
         }
-        if (rename("log.txt", "old.txt") == 0)
+        if (rename("Escrevelog.txt", "old.txt") == 0)
         {
-            arquivo = fopen("log.txt", "a");
-            printf("Log novo inciado");
+            arquivo = fopen("Escrevelog.txt", "a");
+            printf("Escrevelog novo inciado");
         }
         initday = ptm->tm_mday;
     }
@@ -236,12 +236,12 @@ void tempo()
             fclose(arquivo);
             if (remove("old.txt") == 0)
             {
-                printf("Deletou log antigo");
+                printf("Deletou Escrevelog antigo");
             }
-            if (rename("log.txt", "old.txt") == 0)
+            if (rename("Escrevelog.txt", "old.txt") == 0)
             {
-                arquivo = fopen("log.txt", "a");
-                printf("Log novo inciado");
+                arquivo = fopen("Escrevelog.txt", "a");
+                printf("Escrevelog novo inciado");
             }
             initmon = ptm->tm_mon;
             initday = ptm->tm_mday;
@@ -254,12 +254,12 @@ void tempo()
                 fclose(arquivo);
                 if (remove("old.txt") == 0)
                 {
-                    printf("Deletou log antigo");
+                    printf("Deletou Escrevelog antigo");
                 }
-                if (rename("log.txt", "old.txt") == 0)
+                if (rename("Escrevelog.txt", "old.txt") == 0)
                 {
-                    arquivo = fopen("log.txt", "a");
-                    printf("Log novo inciado");
+                    arquivo = fopen("Escrevelog.txt", "a");
+                    printf("Escrevelog novo inciado");
                 }
                 initmon = ptm->tm_mon;
                 initday = ptm->tm_mday;
@@ -275,7 +275,7 @@ void tempo()
 int main(int argc, char *argv[])
 {
 
-    arquivo = fopen("log.txt", "a");
+    arquivo = fopen("Escrevelog.txt", "a");
     //Inicia o horario
     rawtime = time(NULL);
     ptm = localtime(&rawtime);
@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
 
     if (arquivo == NULL)
     {
-        printf("Não foi possivel criar log");
+        printf("Não foi possivel criar Escrevelog");
     }
 
     while (1)
