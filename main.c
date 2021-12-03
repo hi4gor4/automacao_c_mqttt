@@ -384,7 +384,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        if(luz1 - atual_luz1 != 0){
+        if(luz1 - atual_luz1 == 0){
             fprintf(arquivo, "%d %d %d Estado da luz 1 alterado par: %d\n", ptm->tm_hour, ptm->tm_min, ptm->tm_sec, luz1);
         }
         if(luz2 - atual_luz2 != 0){
