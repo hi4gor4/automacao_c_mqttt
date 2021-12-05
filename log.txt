@@ -1,0 +1,5 @@
+16 06 15 Estado da luz 1 alterado par: 0
+16 06 28 Estado da luz 1 alterado par: 1
+16 07 00 Estado de segurança alterado para: 1
+16 07 08 Intruso detectado
+16 07 14 Estado da luz 1 alterado para: 1

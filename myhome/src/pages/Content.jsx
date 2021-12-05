@@ -197,7 +197,7 @@ export default function Content({ title }) {
             Luz 1:
             <Stack direction="row" spacing={1} alignItems="center">
               <Typography>Desativado</Typography>
-              <AntSwitch checked={Variaveis.luz1} inputProps={{ 'aria-label': 'ant design' }}/>
+              <AntSwitch checked={Exibir.luz1} inputProps={{ 'aria-label': 'ant design' }}/>
               <Typography>Ativo</Typography>
             </Stack>
             <Stack direction="collun" spacing={1} alignItems="center">
@@ -211,7 +211,7 @@ export default function Content({ title }) {
             Luz 2:
             <Stack direction="row" spacing={1} alignItems="center">
               <Typography>Desativado</Typography>
-              <AntSwitch checked={Variaveis.luz1} inputProps={{ 'aria-label': 'ant design' }}/>
+              <AntSwitch checked={Exibir.luz2} inputProps={{ 'aria-label': 'ant design' }}/>
               <Typography>Ativo</Typography>
             </Stack>
             <Stack direction="row" spacing={1} alignItems="center">
